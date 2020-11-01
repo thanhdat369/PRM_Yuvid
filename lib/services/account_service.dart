@@ -16,10 +16,11 @@ class AccountApiProvider {
     print(json_body);
     final response =
         await http.post(baseUrl, headers: headers, body: json_body);
-    print(response.body);
-    // final responseString = jsonDecode(response.body);
-    // print(responseString);
+    if (response.body.contains("Invalid username"))
+      throw Exception("Invalid username password");
 
-    // return parseResponse(response);
+    final responseString = jsonDecode(response.body);
+    print(AccountDTO.fromJson(responseString));
+    return AccountDTO.fromJson(responseString);
   }
 }

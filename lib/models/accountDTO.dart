@@ -3,7 +3,7 @@ class AccountDTO {
   String username;
   String email;
   String name;
-  Null avatarSrc;
+  String avatarSrc;
   String bio;
 
   AccountDTO(

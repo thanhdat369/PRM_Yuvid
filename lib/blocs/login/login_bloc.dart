@@ -2,17 +2,37 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:prm_yuvid/repositories/account_repo.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial());
+  AccountRepository accountRepo;
+
+  LoginBloc() : super(LoginInitial()) {
+    this.accountRepo = AccountRepository();
+  }
+
+  @override
+  // TODO: implement initialState
+  LoginState get initialState => LoginInitial();
 
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
+    try {
+      if (event is LoginButtonPressEvent) {
+        yield LoginLoadingState();
+        var user = await accountRepo.login(event.username, event.password);
+        print("--------------");
+        yield LoginSuccessState(id: user.id);
+      }
+    } catch (e) {
+      yield LoginFailedState(message: e.toString().substring(10));
+    }
     // TODO: implement mapEventToState
   }
 }
