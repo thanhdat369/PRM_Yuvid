@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prm_yuvid/blocs/auth/auth_bloc.dart';
 import 'package:prm_yuvid/screens/login_signup/login_screen.dart';
-import 'package:prm_yuvid/screens/login_signup/sign_up.dart';
+import 'package:prm_yuvid/screens/login_signup/splash_screen.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/user_home.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
@@ -21,8 +23,10 @@ class App extends StatelessWidget {
             fontFamily: "Product Sans",
           ),
           primarySwatch: Colors.blue),
-      initialRoute: '/login',
-      onGenerateRoute: onGenerateRoute,
+      home: BlocProvider(
+        create: (context) => AuthBloc()..add(AppStartedEvent()),
+        child: AuthenScreen(),
+      ),
     );
 
     //Dimniss auto focus
@@ -35,15 +39,21 @@ class App extends StatelessWidget {
 
     return myApp;
   }
+}
 
-  Route onGenerateRoute(RouteSettings routeSettings) {
-    if (routeSettings.name == '/login') {
-      return MaterialPageRoute(builder: (_) => LoginScreen());
-    }
+class AuthenScreen extends StatelessWidget {
+  const AuthenScreen({Key key}) : super(key: key);
 
-    if (routeSettings.name == '/sign_up') {
-      return MaterialPageRoute(builder: (_) => SignUpScreen());
-    }
-    return MaterialPageRoute(builder: (_) => Home());
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      if (state is AuthInitial) {
+        return SplashScreen();
+      } else if (state is AuthenticatedState) {
+        return Home();
+      } else if (state is UnAuthenticatedState) {
+        return LoginPageParent();
+      }
+    });
   }
 }

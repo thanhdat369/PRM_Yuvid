@@ -9,16 +9,16 @@ abstract class AuthState extends Equatable {
 
 class AuthInitial extends AuthState {}
 
-class AuthSuccess extends AuthState {
-  AccountDTO accountDTO;
-
+class AuthenticatedState extends AuthState {
+  int id;
+  AuthenticatedState(this.id);
   @override
   List<Object> get props => [];
 
   @override
   String toString() {
-    return accountDTO.username;
+    return "id : $id";
   }
 }
 
-class AuthFailed extends AuthState {}
+class UnAuthenticatedState extends AuthState {}

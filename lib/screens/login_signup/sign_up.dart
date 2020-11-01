@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prm_yuvid/screens/login_signup/login_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 import 'components/brand_label.dart';
 import 'components/rounded_button.dart';
@@ -82,7 +83,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: 2,
                           decoration: TextDecoration.underline)),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.of(context)
+                        .pushReplacement(MaterialPageRoute(builder: (context) {
+                      return LoginPageParent();
+                    }));
                   },
                 ),
               ],
