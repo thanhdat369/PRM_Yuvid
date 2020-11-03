@@ -85,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                 if (state is LoginSuccessState) {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (context) {
-                    return Home(id: state.id);
+                    return UserHome(id: state.id);
                   }));
                 }
               },
