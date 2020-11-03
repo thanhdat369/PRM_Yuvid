@@ -1,10 +1,10 @@
 class VideoDTO {
   int id;
-  Null name;
+  String name;
   String src;
   String description;
   int authorId;
-  Null authorName;
+  String authorName;
   String createdAt;
 
   VideoDTO(
@@ -36,5 +36,11 @@ class VideoDTO {
     data['authorName'] = this.authorName;
     data['createdAt'] = this.createdAt;
     return data;
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "${this.description} - ${this.authorName} ";
   }
 }

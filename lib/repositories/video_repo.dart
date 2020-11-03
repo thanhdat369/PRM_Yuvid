@@ -3,5 +3,6 @@ import 'package:prm_yuvid/services/video_service.dart';
 
 class VideoRepo {
   VideoAPIService videoAPIService = VideoAPIService();
-  Future<List<VideoDTO>> fetchAllVideo() => videoAPIService.fetchAllVideo();
+  Future<VideoDTO> getVideoByPage(int pageVideo) =>
+      videoAPIService.getVideoByPage(pageVideo);
 }

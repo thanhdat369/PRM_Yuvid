@@ -6,13 +6,8 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
 class VideoCard extends StatefulWidget {
-  final VideoDTO videoDTO = VideoDTO(
-      authorId: 1,
-      description: "Hello",
-      src:
-          'https://firebasestorage.googleapis.com/v0/b/prm-t-c006e.appspot.com/o/Videos%2F15%20second%20video.mp4?alt=media&token=6984b7bc-1fd8-4004-a395-7ebf5c731d24');
-
-  // VideoCard({this.videoDTO});
+  final VideoDTO videoDTO;
+  VideoCard({this.videoDTO});
   @override
   _VideoCardState createState() => _VideoCardState();
 }
@@ -56,10 +51,14 @@ class _VideoCardState extends State<VideoCard> {
                 MyCircleAvatar(
                   radius: 20,
                 ),
-                Text("Name Account"),
+                Text(widget.videoDTO.authorName == null
+                    ? ""
+                    : widget.videoDTO.authorName),
               ],
             ),
-            Text("Video Description"),
+            Text(widget.videoDTO.description == null
+                ? ""
+                : widget.videoDTO.description),
           ],
         ),
       ),
