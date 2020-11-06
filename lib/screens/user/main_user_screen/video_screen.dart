@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prm_yuvid/blocs/video/video_bloc.dart';
+import 'package:prm_yuvid/blocs/video/load/video_bloc.dart';
 import 'package:prm_yuvid/screens/user/components/video_card.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
@@ -72,6 +72,7 @@ class _VideoScreenState extends State<VideoScreen> {
                   ],
                 );
               }
+              return Center(child: Text("Nothing to show"));
             },
           ),
         ),
