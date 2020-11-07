@@ -32,7 +32,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield LoginSuccessState(id: user.id);
       }
     } catch (e) {
-      yield LoginFailedState(message: e.toString().substring(10));
+      if (e.toString().contains("XMLHttp")) {
+        yield LoginFailedState(message: "No Internet connection");
+      } else
+        yield LoginFailedState(message: e.toString().substring(10));
     }
     // TODO: implement mapEventToState
   }

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:prm_yuvid/screens/user/components_screen/edit_profile_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -85,18 +86,27 @@ class ProfileScreen extends StatelessWidget {
             ),
             buildFollowInfo(follower: 10, following: 30),
             Container(
-              width: 140,
-              height: 47,
-              margin: EdgeInsets.only(bottom: 10),
-              decoration:
-                  BoxDecoration(border: Border.all(color: MainColors.kLight)),
-              child: Center(
-                child: Text(
-                  "Edit profile",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+                width: 140,
+                height: 47,
+                margin: EdgeInsets.only(bottom: 10),
+                decoration:
+                    BoxDecoration(border: Border.all(color: MainColors.kLight)),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditProfileParentScreen()),
+                    );
+                  },
+                  child: Center(
+                    child: Text(
+                      "Edit profile",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )),
             Row(
               children: [
                 Expanded(

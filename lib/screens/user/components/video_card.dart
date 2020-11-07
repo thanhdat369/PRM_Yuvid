@@ -1,7 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:prm_yuvid/models/videoDTO.dart';
 import 'package:prm_yuvid/screens/shared/my_circleavt.dart';
+import 'package:prm_yuvid/themes/colors.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
@@ -13,20 +14,39 @@ class VideoCard extends StatefulWidget {
 }
 
 class _VideoCardState extends State<VideoCard> {
-  VideoPlayerController _controller;
-
+  VideoPlayerController _videoController;
+  ChewieController _chewieController;
   bool isLiked;
+  bool isPlaying;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.videoDTO.src)
-      ..initialize().then((_) {
-        setState(() {
-          _controller.play();
-        });
-      });
+    // _controller = VideoPlayerController.network(widget.videoDTO.src)
+    //   ..initialize().then((_) {
+    //     setState(() {
+    //       _controller.play();
+    //     });
+    //   });
+    // _videoController = VideoPlayerController.network(widget.videoDTO.src);
+    _videoController = VideoPlayerController.network(
+        "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4");
+
+    _chewieController = ChewieController(
+      videoPlayerController: _videoController,
+      aspectRatio: _videoController.value.aspectRatio,
+      autoPlay: true,
+      looping: true,
+
+      // Try playing around with some of these other options:
+
+      showControls: false,
+
+      autoInitialize: true,
+    );
+
     isLiked = true;
+    isPlaying = true;
   }
 
   @override
@@ -48,21 +68,39 @@ class _VideoCardState extends State<VideoCard> {
                     : widget.videoDTO.authorName),
               ],
             ),
-            Text(widget.videoDTO.description == null
-                ? ""
-                : widget.videoDTO.description),
+            Text(widget.videoDTO.name == null ? "" : widget.videoDTO.name,
+                style: TextStyle(color: MainColors.kSoftLight, fontSize: 20)),
+            Text(
+              widget.videoDTO.createdAt == null
+                  ? ""
+                  : widget.videoDTO.createdAt,
+              style: TextStyle(color: MainColors.kSoftLight),
+            ),
+            Text(
+              widget.videoDTO.description == null
+                  ? ""
+                  : widget.videoDTO.description,
+              style: TextStyle(color: MainColors.kSoftLight),
+            ),
           ],
         ),
       ),
-      Center(
-        child: _controller.value.initialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : CircularProgressIndicator(
-                backgroundColor: Colors.yellow,
-              ),
+      GestureDetector(
+        onTap: () {
+          print("hello");
+          setState(() {
+            if (isPlaying) {
+              _chewieController.pause();
+            } else {
+              _chewieController.play();
+            }
+            isPlaying = !isPlaying;
+          });
+        },
+        child: Center(
+            child: Chewie(
+          controller: _chewieController,
+        )),
       ),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -71,8 +109,8 @@ class _VideoCardState extends State<VideoCard> {
           children: <Widget>[
             FloatingActionButton(
               child: Icon(
-                isLiked ? Icons.favorite : Icons.favorite_border,
-                color: Colors.pink,
+                isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                color: Colors.blueAccent,
                 size: 33.0,
               ),
               onPressed: () {
@@ -84,19 +122,6 @@ class _VideoCardState extends State<VideoCard> {
               },
               heroTag: "favourite",
               backgroundColor: Colors.white,
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _controller.value.isPlaying
-                      ? _controller.pause()
-                      : _controller.play();
-                });
-              },
-              child: Icon(
-                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-              ),
-              heroTag: "VideoControl",
             ),
             FloatingActionButton(
               child: Icon(
@@ -122,6 +147,7 @@ class _VideoCardState extends State<VideoCard> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _videoController.dispose();
+    _chewieController.dispose();
   }
 }

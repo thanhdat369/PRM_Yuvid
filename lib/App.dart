@@ -51,7 +51,7 @@ class AuthenScreen extends StatelessWidget {
       if (state is AuthInitial) {
         return SplashScreen();
       } else if (state is AuthenticatedState) {
-        return UserHome();
+        return UserHomeScreen();
       } else if (state is UnAuthenticatedState) {
         return LoginPageParent();
       }
