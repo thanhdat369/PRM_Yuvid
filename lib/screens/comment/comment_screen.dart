@@ -35,6 +35,7 @@ class _CommentChildScreenState extends State<CommentChildScreen> {
     _commentBloc = BlocProvider.of(context);
     _commentBloc.add(FetchCommentEvent(idVideo:this.widget.videoId));
   }
+  
   @override
   Widget build(BuildContext context) {
     return Container(
