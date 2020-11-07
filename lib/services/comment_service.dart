@@ -7,10 +7,9 @@ class CommentService {
   final successCode = 200;
 
   Future<List<CommentReadDTO>> getCommentInVideo(int _videoId) async {
-    String baseUrl = "https://tiktok-prm.azurewebsites.net/api/comments";
+    String baseUrl = "https://tiktok-prm.azurewebsites.net/api/videos/$_videoId/comments";
   
     List<CommentReadDTO> _list = List();
-    List<CommentReadDTO> _listed = List();
     // final json_body = json.encode(dto);
     // print(json_body);
     final response = await http.get(baseUrl);
@@ -23,9 +22,6 @@ class CommentService {
     _list = (json.decode(response.body) as List)
             .map((data) => new CommentReadDTO.fromJson(data))
             .toList();
-      
-    _listed = _list.where((i) => i.videoId == _videoId).toList();
-    print(_listed);
-    return _listed;
+    return _list;
   }
 }
