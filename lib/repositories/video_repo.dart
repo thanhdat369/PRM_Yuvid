@@ -5,4 +5,5 @@ class VideoRepo {
   VideoAPIService videoAPIService = VideoAPIService();
   Future<VideoDTO> getVideoByPage(int pageVideo) =>
       videoAPIService.getVideoByPage(pageVideo);
+  Future<bool> upload(VideoUploadDTO dto) => videoAPIService.upload(dto);
 }

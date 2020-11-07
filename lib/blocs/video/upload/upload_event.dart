@@ -6,3 +6,8 @@ abstract class UploadEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class UploadVideoClickEvent extends UploadEvent {
+  VideoUploadDTO videoUploadDTO;
+  UploadVideoClickEvent({this.videoUploadDTO});
+}

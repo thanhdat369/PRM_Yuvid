@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class VideoDTO {
   int id;
   String name;
@@ -42,5 +44,34 @@ class VideoDTO {
   String toString() {
     // TODO: implement toString
     return "${this.description} - ${this.authorName} ";
+  }
+}
+
+class VideoUploadDTO {
+  String name;
+  File src;
+  String description;
+  int authorId;
+  String createdAt;
+
+  VideoUploadDTO(
+      {this.name, this.src, this.description, this.authorId, this.createdAt});
+
+  VideoUploadDTO.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    src = json['src'];
+    description = json['description'];
+    authorId = json['authorId'];
+    createdAt = json['createdAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['src'] = this.src;
+    data['description'] = this.description;
+    data['authorId'] = this.authorId;
+    data['createdAt'] = this.createdAt;
+    return data;
   }
 }
