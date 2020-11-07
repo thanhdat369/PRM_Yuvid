@@ -25,6 +25,8 @@ class VideoScreen extends StatefulWidget {
 
 class _VideoScreenState extends State<VideoScreen> {
   VideoBloc videoBloc;
+  int swipe;
+  int page;
   @override
   void initState() {
     videoBloc = BlocProvider.of<VideoBloc>(context);
@@ -33,49 +35,62 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Container(
-      color: MainColors.kDark,
-      child: Column(children: [
-        BlocListener<VideoBloc, VideoState>(
-          listener: (context, state) {},
-          child: BlocBuilder<VideoBloc, VideoState>(
-            builder: (context, state) {
-              if (state is VideoInitial) {
-                return CircularProgressIndicator();
-              }
-              if (state is VideoFailedState) {
-                return Text(state.error);
-              }
-              if (state is VideoSuccessState) {
-                print(state.videoDTO.src);
-                return Column(
-                  children: [
-                    VideoCard(videoDTO: state.videoDTO),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          FloatingActionButton(
-                              onPressed: () {
-                                videoBloc.add(
-                                    VideoPagePressEvent(page: state.page - 1));
-                              },
-                              child: Icon(Icons.navigate_before)),
-                          FloatingActionButton(
-                              onPressed: () {
-                                videoBloc.add(
-                                    VideoPagePressEvent(page: state.page + 1));
-                              },
-                              child: Icon(Icons.navigate_next)),
-                        ]),
-                  ],
-                );
-              }
-              return Center(child: Text("Nothing to show"));
-            },
+    return GestureDetector(
+      onHorizontalDragUpdate: _onHorizontalDragUpdate,
+      onHorizontalDragEnd: _onDragEnd,
+      child: Container(
+        width: double.maxFinite,
+        height: double.maxFinite,
+        alignment: Alignment.center,
+        color: MainColors.kDark,
+        child: Column(children: [
+          BlocListener<VideoBloc, VideoState>(
+            listener: (context, state) {},
+            child: BlocBuilder<VideoBloc, VideoState>(
+              builder: (context, state) {
+                if (state is VideoInitial) {
+                  return CircularProgressIndicator();
+                }
+                if (state is VideoFailedState) {
+                  return Text(state.error);
+                }
+                if (state is VideoSuccessState) {
+                  page = state.page;
+                  return VideoCard(videoDTO: state.videoDTO);
+                }
+                return Center(child: Text("Nothing to show"));
+              },
+            ),
           ),
-        ),
-      ]),
-    ));
+        ]),
+      ),
+    );
+  }
+
+  void _onHorizontalDragUpdate(DragUpdateDetails details) {
+    // print(details.delta.dx);
+    double sensitivity = 0.5;
+    if (details.delta.dx > sensitivity) {
+      swipe = 1;
+      // print('Right');
+      // Right Swipe
+    } else if (details.delta.dx < -sensitivity) {
+      // print('Left');
+      swipe = 0;
+      //Left Swipe
+    } else {
+      swipe = null;
+    }
+  }
+
+  void _onDragEnd(DragEndDetails details) {
+    if (swipe != null) {
+      if (swipe == 0) {
+        videoBloc.add(VideoPagePressEvent(page: this.page + 1));
+      } else if (swipe == 1) {
+        videoBloc.add(VideoPagePressEvent(page: this.page - 1));
+      }
+    }
+    print("---------------\n page $page");
   }
 }

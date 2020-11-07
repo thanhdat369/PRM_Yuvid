@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prm_yuvid/screens/user/components_screen/upload_test_screen.dart';
-import 'package:prm_yuvid/screens/user/main_user_screen/profile_screen.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/video_screen.dart';
 
 class UserHome extends StatelessWidget {
@@ -10,8 +8,12 @@ class UserHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: UploadScreenParent(),
-      // body: VideoScreenParent(),
+      // body: UploadScreenParent(),
+      body: SafeArea(
+          child: Container(
+              // padding: EdgeInsets.all(20),
+              alignment: Alignment.bottomCenter,
+              child: VideoScreenParent())),
     );
   }
 }

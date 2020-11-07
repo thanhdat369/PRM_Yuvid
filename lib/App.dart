@@ -25,8 +25,8 @@ class App extends StatelessWidget {
           primarySwatch: Colors.blue),
       home: BlocProvider(
         create: (context) => AuthBloc()..add(AppStartedEvent()),
-        // child: AuthenScreen(),
-        child: UserHome(),
+        child: AuthenScreen(),
+        // child: UserHome(),
       ),
     );
 

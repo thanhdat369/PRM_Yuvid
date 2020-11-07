@@ -31,7 +31,7 @@ class UploadScreen extends StatefulWidget {
 
 class _UploadScreenState extends State<UploadScreen> {
   UploadBloc _uploadBloc;
-  File _image;
+  File _video;
   TextEditingController _namecontroller = TextEditingController();
   TextEditingController _descriptioncontroller = TextEditingController();
   final picker = ImagePicker();
@@ -41,13 +41,12 @@ class _UploadScreenState extends State<UploadScreen> {
     _uploadBloc = BlocProvider.of<UploadBloc>(context);
   }
 
-  Future getImage() async {
+  Future pickVideo() async {
     final pickedFile = await picker.getVideo(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        print(_image);
+        _video = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
@@ -85,25 +84,25 @@ class _UploadScreenState extends State<UploadScreen> {
             ),
             RaisedButton(
               child: Icon(Icons.add),
-              onPressed: getImage,
+              onPressed: pickVideo,
             ),
-            Center(child: Text(this._image == null ? "" : "Choosed")),
+            Center(child: Text(this._video == null ? "" : "Choosed")),
             UserRoundedButton(
               text: "Upload",
-              press: addNewImage,
+              press: uploadVideo,
             )
           ],
         ));
   }
 
-  void addNewImage() {
+  void uploadVideo() {
     VideoUploadDTO videoUploadDTO = VideoUploadDTO(
-      src: this._image,
+      src: this._video,
       authorId: MockSession.id,
       name: _namecontroller.text,
       description: _descriptioncontroller.text,
     );
-    _uploadBloc.add(UploadVideoClickEvent(videoUploadDTO: videoUploadDTO));
+    // _uploadBloc.add(UploadVideoClickEvent(videoUploadDTO: videoUploadDTO));
     // print(_namecontroller.text);
     // print(_descriptioncontroller.text);
     // print(this._image);

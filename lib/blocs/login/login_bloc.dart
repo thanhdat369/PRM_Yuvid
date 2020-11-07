@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/repositories/account_repo.dart';
 
 part 'login_event.dart';
@@ -27,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event is LoginButtonPressEvent) {
         yield LoginLoadingState();
         var user = await accountRepo.login(event.username, event.password);
-        print("--------------");
+        MockSession.id = user.id;
         yield LoginSuccessState(id: user.id);
       }
     } catch (e) {

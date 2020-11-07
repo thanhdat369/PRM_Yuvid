@@ -27,20 +27,12 @@ class _VideoCardState extends State<VideoCard> {
         });
       });
     isLiked = true;
-    // if (widget.videoReference['isLiked'].contains(widget.user)) {
-    //   setState(() {
-    //     isLiked = true;
-    //   });
-    // } else {
-    //   setState(() {
-    //     isLiked = false;
-    //   });
-    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return SingleChildScrollView(
+        child: Column(children: [
       Container(
         alignment: Alignment.topLeft,
         child: Column(
@@ -124,7 +116,7 @@ class _VideoCardState extends State<VideoCard> {
           ],
         ),
       ),
-    ]);
+    ]));
   }
 
   @override
