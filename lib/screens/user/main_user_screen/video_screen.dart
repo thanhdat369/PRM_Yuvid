@@ -26,7 +26,6 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   VideoBloc videoBloc;
   @override
-  @override
   void initState() {
     videoBloc = BlocProvider.of<VideoBloc>(context);
     videoBloc.add(VideoFetchEvent());

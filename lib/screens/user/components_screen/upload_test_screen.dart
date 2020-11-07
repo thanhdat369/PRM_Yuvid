@@ -38,11 +38,11 @@ class _UploadScreenState extends State<UploadScreen> {
   @override
   void initState() {
     super.initState();
-    _uploadBloc = BlocProvider.of(context);
+    _uploadBloc = BlocProvider.of<UploadBloc>(context);
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getVideo(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -104,8 +104,8 @@ class _UploadScreenState extends State<UploadScreen> {
       description: _descriptioncontroller.text,
     );
     _uploadBloc.add(UploadVideoClickEvent(videoUploadDTO: videoUploadDTO));
-    print(_namecontroller.text);
-    print(_descriptioncontroller.text);
-    print(this._image);
+    // print(_namecontroller.text);
+    // print(_descriptioncontroller.text);
+    // print(this._image);
   }
 }

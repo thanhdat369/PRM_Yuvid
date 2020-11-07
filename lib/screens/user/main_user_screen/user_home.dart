@@ -10,7 +10,7 @@ class UserHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: UploadScreen(),
+      body: UploadScreenParent(),
       // body: VideoScreenParent(),
     );
   }
