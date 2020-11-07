@@ -23,4 +23,22 @@ class AccountApiProvider {
     print(AccountDTO.fromJson(responseString));
     return AccountDTO.fromJson(responseString);
   }
+
+  Future<AccountSignUpDTO> signup(AccountSignUpDTO dto) async {
+    String baseUrl = "https://tiktok-prm.azurewebsites.net/api/accounts";
+    Map<String, String> headers = {
+      "Content-type": "application/json-patch+json"
+    };
+    //AccountAuthDTO dto = AccountAuthDTO(username: username, password: password);
+    final json_body = json.encode(dto);
+    print(json_body);
+    final response =
+        await http.post(baseUrl, headers: headers, body: json_body);
+    if (response.body.contains("Error"))
+      throw Exception("Existed usename");
+
+    final responseString = jsonDecode(response.body);
+    print(AccountSignUpDTO.fromJson(responseString));
+    return AccountSignUpDTO.fromJson(responseString);
+  }
 }

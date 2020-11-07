@@ -6,4 +6,8 @@ class AccountRepository {
   
   Future<AccountDTO> login(String username, String password) =>
       accountApiProvider.login(username, password);
+
+  Future<AccountSignUpDTO> signup(AccountSignUpDTO dto) =>
+      accountApiProvider.signup(dto);
 }
+
