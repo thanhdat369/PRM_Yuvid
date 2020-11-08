@@ -73,7 +73,7 @@ class LoginScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
-                        return SignUpScreen();
+                        return SignUpPageParent();
                       }));
                     },
                   ),
@@ -85,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                 if (state is LoginSuccessState) {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (context) {
-                    return Home(id: state.id);
+                    return UserHomeScreen(id: state.id);
                   }));
                 }
               },

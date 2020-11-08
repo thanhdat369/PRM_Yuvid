@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prm_yuvid/blocs/signup/signup_bloc.dart';
+import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/login_signup/login_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 import 'components/brand_label.dart';
@@ -7,18 +10,38 @@ import 'components/rounded_input.dart';
 import 'components/rounded_password.dart';
 import 'components/screen_with_background.dart';
 
-class SignUpScreen extends StatefulWidget {
-  SignUpScreen({Key key}) : super(key: key);
+// class SignUpScreen extends StatefulWidget {
+//   SignUpScreen({Key key}) : super(key: key);
 
-  @override
-  _SignUpScreenState createState() => _SignUpScreenState();
-}
+//   @override
+//   SignUpScreenState createState() => SignUpScreenState();
+// }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  int group_value = 1;
-  bool isCheck = true;
+class SignUpPageParent extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SignupBloc(),
+      child: SignUpScreen(),
+    );
+  }
+}
+
+class SignUpScreen extends StatelessWidget {
+  TextEditingController usernameController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+  TextEditingController fullnameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController bioController = new TextEditingController();
+  SignupBloc _signupBloc;
+
+
+  // int group_value = 1;
+  // bool isCheck = true;
+  @override
+  Widget build(BuildContext context) {
+    _signupBloc = BlocProvider.of<SignupBloc>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: MainColors.kDark,
@@ -32,38 +55,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Column(
               children: [
                 RoundedInputField(
-                  hintText: "Enter Full Name",
+                  hintText: "Enter UserName",
+                  textEditingController: usernameController,
+                ),
+                RoundedInputField(
+                  hintText: "Enter Fullname",
+                  textEditingController: fullnameController,
+                ),
+                RoundedPasswordField(
+                  hintText: "Enter Password",
+                  ishaveVisibleButton: false,
+                  textEditingController: passwordController,
                 ),
                 RoundedInputField(
                   hintText: "Enter Email",
+                  textEditingController: emailController,
                   icon: Icons.email,
                 ),
-                RoundedPasswordField(
-                  hintText: "Password",
-                  ishaveVisibleButton: false,
+                RoundedInputField(
+                  hintText: "Enter bio",
+                  textEditingController: bioController,
                 ),
-                RoundedPasswordField(
-                  hintText: "Confirm Password",
-                  ishaveVisibleButton: false,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Checkbox(
-                        value: isCheck,
-                        checkColor: MainColors.kMain, // color of tick Mark
-                        activeColor: MainColors.kLight,
-                        onChanged: (bool value) {
-                          setState(() {
-                            isCheck = value;
-                          });
-                        }),
-                    Text("Agree to the Terms of Service & Privacy Policy",
-                        style: TextStyle(fontSize: 13)),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     Checkbox(
+                //         value: isCheck,
+                //         checkColor: MainColors.kMain, // color of tick Mark
+                //         activeColor: MainColors.kLight,
+                //         onChanged: (bool value) {
+                //           setState(() {
+                //             isCheck = value;
+                //           });
+                //         }),
+                //     Text("Agree to the Terms of Service & Privacy Policy",
+                //         style: TextStyle(fontSize: 13)),
+                //   ],
+                // ),
                 RoundedButton(
                   text: "REGISTER",
+                  press: signup,
                 ),
               ],
             ),
@@ -90,10 +121,70 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
               ],
-            )
+            ),
+            
+            BlocListener<SignupBloc, SignupState>(
+              listener: (context, state) {
+                if (state is SignupSuccessState) {
+                  Navigator.of(context)
+                      .pushReplacement(MaterialPageRoute(builder: (context) {
+                    return LoginPageParent();
+                  }));
+                }
+              },
+              child:
+                  BlocBuilder<SignupBloc, SignupState>(builder: (context, state) {
+                if (state is SignupInitial) {
+                  return SizedBox.shrink();
+                } else if (state is SignupLoadingState) {
+                  return buildLoading();
+                } else if (state is SignupSuccessState) {
+                  return Container();
+                } else if (state is SignupFailedState) {
+                  return buildFailure(state.message);
+                } else {
+                  return SizedBox.shrink();
+                }
+              }),
+            ),
+
           ],
         ),
       ),
     );
+  }
+
+  Widget buildLoading() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget buildFailure(String mess) {
+    return Text(mess, style: TextStyle(color: Colors.red));
+  }
+
+  void signup() {
+
+
+
+    if (passwordController.text.isEmpty || usernameController.text.isEmpty) {
+    } else {
+
+      String _username = usernameController.text;
+      String _fullname = fullnameController.text;
+      String _password = passwordController.text;
+      String _email = emailController.text;
+      String _bio = bioController.text;
+      
+
+      AccountSignUpDTO _dto = AccountSignUpDTO(username: _username,
+                                              name: _fullname,
+                                              password: _password,
+                                              email: _email,
+                                              bio: _bio);
+
+      _signupBloc.add(SignupButtonPressEvent(dto: _dto));
+    }
   }
 }

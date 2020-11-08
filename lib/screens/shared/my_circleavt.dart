@@ -6,7 +6,8 @@ class MyCircleAvatar extends StatelessWidget {
   const MyCircleAvatar(
       {Key key,
       this.radius = 40,
-      this.imgPath = "asset/images/user_screen/noavt.jpg"})
+      this.imgPath =
+          "https://www.daunhotsinopec.com/public/front-end/images/avatar.jpg"})
       : super(key: key);
 
   @override
@@ -14,7 +15,7 @@ class MyCircleAvatar extends StatelessWidget {
     return CircleAvatar(
       radius: this.radius,
       child: ClipOval(
-        child: Image.asset(
+        child: Image.network(
           this.imgPath,
           fit: BoxFit.cover,
         ),
