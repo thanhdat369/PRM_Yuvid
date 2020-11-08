@@ -1,7 +1,7 @@
 import 'package:chewie/chewie.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:prm_yuvid/models/videoDTO.dart';
 import 'package:prm_yuvid/screens/shared/my_circleavt.dart';
+import 'package:prm_yuvid/screens/user/components_screen/comment/comment_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
@@ -129,10 +129,14 @@ class _VideoCardState extends State<VideoCard> {
                 color: Colors.blue,
                 size: 33.0,
               ),
-              onPressed: () async {
-                await FlutterShare.share(
-                  title: 'Watch this Awesome Video !',
-                  linkUrl: widget.videoDTO.src,
+              onPressed: () {
+                print("hello");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CommentParent(
+                            videoId: this.widget.videoDTO.id,
+                          )),
                 );
               },
               heroTag: "share",

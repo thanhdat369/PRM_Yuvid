@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prm_yuvid/screens/user/components_screen/edit_profile_screen.dart';
 import 'package:prm_yuvid/screens/user/components_screen/upload_test_screen.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/profile_screen.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/video_screen.dart';

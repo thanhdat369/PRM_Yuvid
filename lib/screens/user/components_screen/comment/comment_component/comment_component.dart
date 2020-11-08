@@ -15,26 +15,35 @@ class _CommentListComponentState extends State<CommentListComponent> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      height: size.height,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.list.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CommentItem(
-                  dto: this.widget.list[index],
-                  size: 100,
-                );
-              },
-            ),
-          )
-        ],
-      ),
+    if (this.widget.list.isEmpty) {
+      return buildEmptyComment();
+    } else
+      return Container(
+        width: size.width,
+        height: size.height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return CommentItem(
+                    dto: this.widget.list[index],
+                    size: 100,
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      );
+  }
+
+  Widget buildEmptyComment() {
+    return Center(
+      child: Text("No comment"),
     );
   }
 }
@@ -61,11 +70,12 @@ class CommentItem extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(70)),
             ),
             child: MyCircleAvatar(
-              radius: 70,
-              imgPath: dto.authorAvatarSrc == null
-                  ? "asset/images/user_screen/noavt.jpg"
-                  : dto.authorAvatarSrc,
-            ),
+                radius: 70,
+                // imgPath: dto.authorAvatarSrc == null
+                //     ? "https://www.daunhotsinopec.com/public/front-end/images/avatar.jpg"
+                //     : dto.authorAvatarSrc,
+                imgPath:
+                    "https://www.daunhotsinopec.com/public/front-end/images/avatar.jpg"),
           ),
           Expanded(
             child: Column(

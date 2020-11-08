@@ -1,7 +1,7 @@
 class CommentReadDTO {
   int authorId;
   String authorName;
-  Null authorAvatarSrc;
+  String authorAvatarSrc;
   String content;
   String createdAt;
 
