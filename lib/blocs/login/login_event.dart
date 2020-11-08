@@ -16,6 +16,7 @@ class LoginInitEvent extends LoginEvent {
 class LoginButtonPressEvent extends LoginEvent {
   final String username, password;
   LoginButtonPressEvent({@required this.username, @required this.password});
+  
   @override
   List<Object> get props => [];
 }
