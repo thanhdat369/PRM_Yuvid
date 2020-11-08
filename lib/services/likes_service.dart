@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-class like_service {
+class LikeApiProvider {
   final successCode = 200;
   Future<bool> likeVideo(int _videoId, int _accountId) async {
     String baseUrl = "https://tiktok-prm.azurewebsites.net/api/likes";

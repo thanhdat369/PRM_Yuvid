@@ -1,6 +1,6 @@
 import 'package:prm_yuvid/services/likes_service.dart';
 
-class likes_repo {
+class LikesRepository {
   LikeApiProvider likeApiProvider = LikeApiProvider();
 
   Future<bool> likeVideo(int videoId, int accountId) =>
