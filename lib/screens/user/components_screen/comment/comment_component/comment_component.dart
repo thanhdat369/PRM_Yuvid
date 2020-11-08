@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prm_yuvid/mock/date_time_process.dart';
 import 'package:prm_yuvid/models/commentDTO.dart';
 import 'package:prm_yuvid/screens/shared/my_circleavt.dart';
 import 'package:prm_yuvid/themes/colors.dart';
@@ -98,7 +99,7 @@ class CommentItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  this.dto.createdAt,
+                  getDateTime(this.dto.createdAt),
                   style: TextStyle(fontSize: 10),
                 )
               ],
