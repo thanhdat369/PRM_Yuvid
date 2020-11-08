@@ -1,4 +1,5 @@
 import 'package:chewie/chewie.dart';
+import 'package:prm_yuvid/mock/date_time_process.dart';
 import 'package:prm_yuvid/models/videoDTO.dart';
 import 'package:prm_yuvid/screens/shared/my_circleavt.dart';
 import 'package:prm_yuvid/screens/user/components_screen/comment/comment_screen.dart';
@@ -73,7 +74,7 @@ class _VideoCardState extends State<VideoCard> {
             Text(
               widget.videoDTO.createdAt == null
                   ? ""
-                  : widget.videoDTO.createdAt,
+                  : getDateTime(widget.videoDTO.createdAt),
               style: TextStyle(color: MainColors.kSoftLight),
             ),
             Text(
