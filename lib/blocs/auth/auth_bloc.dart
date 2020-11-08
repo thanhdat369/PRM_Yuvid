@@ -13,7 +13,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     this.authRepo = AuthRepo();
   }
-  @override
   AuthState get initialState => AuthInitial();
 
   @override

@@ -26,6 +26,7 @@ class App extends StatelessWidget {
       home: BlocProvider(
         create: (context) => AuthBloc()..add(AppStartedEvent()),
         child: AuthenScreen(),
+        // child: UserHome(),
       ),
     );
 
@@ -50,7 +51,7 @@ class AuthenScreen extends StatelessWidget {
       if (state is AuthInitial) {
         return SplashScreen();
       } else if (state is AuthenticatedState) {
-        return Home();
+        return UserHomeScreen();
       } else if (state is UnAuthenticatedState) {
         return LoginPageParent();
       }
