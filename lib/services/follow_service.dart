@@ -5,14 +5,13 @@ import 'dart:convert';
 class FollowApiService {
   final successCode = 200;
   Future<List<AccountDTO>> getAllFollowings(int _accountId) async {
-    String baseUrl = "https://tiktok-prm.azurewebsites.net/api/accounts/$_accountId/followings";
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts/$_accountId/followings";
 
     List<AccountDTO> _list = List();
-    final response =
-    await http.get(baseUrl);
+    final response = await http.get(baseUrl);
 
-    if(response.statusCode == 404)
-      throw Exception("No Following yet");
+    if (response.statusCode == 404) throw Exception("No Following yet");
 
     _list = (json.decode(response.body) as List)
         .map((data) => new AccountDTO.fromJson(data))
@@ -20,16 +19,15 @@ class FollowApiService {
     return _list;
   }
 
-  Future<List<AccountDTO>> getAllFoolower(int _accountId) async {
-    String baseUrl = "https://tiktok-prm.azurewebsites.net/api/accounts/$_accountId/follower";
+  Future<List<AccountDTO>> getAllFollower(int _accountId) async {
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts/$_accountId/follower";
 
-    final response =
-    await http.get(baseUrl);
-    
+    final response = await http.get(baseUrl);
+
     List<AccountDTO> _list = List();
 
-    if(response.statusCode == 404)
-      throw Exception("No Following yet");
+    if (response.statusCode == 404) throw Exception("No Following yet");
 
     _list = (json.decode(response.body) as List)
         .map((data) => new AccountDTO.fromJson(data))
