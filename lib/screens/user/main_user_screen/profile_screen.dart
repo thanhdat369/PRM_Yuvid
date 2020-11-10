@@ -2,12 +2,27 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:prm_yuvid/App.dart';
 import 'package:prm_yuvid/mock/mock_session.dart';
+import 'package:prm_yuvid/screens/user/components_screen/edit_avt_screen.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_profile_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return ProfileScreenChild();
+  }
+}
+
+class ProfileScreenChild extends StatefulWidget {
+  ProfileScreenChild({Key key}) : super(key: key);
+
+  @override
+  _ProfileScreenChildState createState() => _ProfileScreenChildState();
+}
+
+class _ProfileScreenChildState extends State<ProfileScreenChild> {
   Widget buildInfomation(String name, {String path = null}) {
     if (path == null) {
       path =
@@ -15,14 +30,22 @@ class ProfileScreen extends StatelessWidget {
     }
     return Column(
       children: [
-        ClipOval(
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: path,
-            height: 130.0,
-            width: 130.0,
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+        InkWell(
+          onDoubleTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditAvtScreen()),
+            );
+          },
+          child: ClipOval(
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: path,
+              height: 130.0,
+              width: 130.0,
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
           ),
         ),
         Container(
@@ -94,50 +117,47 @@ class ProfileScreen extends StatelessWidget {
                       width: 140,
                       height: 40,
                       margin: EdgeInsets.only(bottom: 10, left: 30),
-                      decoration:
-                          BoxDecoration(border: Border.all(color: MainColors.kLight)),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: MainColors.kLight)),
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EditProfileParentScreen()),
+                                builder: (context) =>
+                                    EditProfileParentScreen()),
                           );
                         },
                         child: Center(
                           child: Text(
                             "Edit profile",
-                            style:
-                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
-                      )
-                    ),
-
-                    Container(
+                      )),
+                  Container(
                       width: 140,
                       height: 40,
                       margin: EdgeInsets.only(bottom: 10, left: 20),
-                      decoration:
-                          BoxDecoration(border: Border.all(color: MainColors.kLight)),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: MainColors.kLight)),
                       child: InkWell(
                         onTap: () {
                           MockSession.logout();
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => App()),
+                            MaterialPageRoute(builder: (context) => App()),
                           );
                         },
                         child: Center(
                           child: Text(
                             "Log out",
-                            style:
-                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
-                      )
-                    ),
+                      )),
                 ],
               ),
             ),
