@@ -7,7 +7,9 @@ class VideoDTO {
   String description;
   int authorId;
   String authorName;
+  String avatarSrc;
   String createdAt;
+  List<int> likedAccount;
 
   VideoDTO(
       {this.id,
@@ -16,7 +18,9 @@ class VideoDTO {
       this.description,
       this.authorId,
       this.authorName,
-      this.createdAt});
+      this.avatarSrc,
+      this.createdAt,
+      this.likedAccount});
 
   VideoDTO.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -25,7 +29,9 @@ class VideoDTO {
     description = json['description'];
     authorId = json['authorId'];
     authorName = json['authorName'];
+    avatarSrc = json['avatarSrc'];
     createdAt = json['createdAt'];
+    likedAccount = json['likedAccount'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {
@@ -36,14 +42,10 @@ class VideoDTO {
     data['description'] = this.description;
     data['authorId'] = this.authorId;
     data['authorName'] = this.authorName;
+    data['avatarSrc'] = this.avatarSrc;
     data['createdAt'] = this.createdAt;
+    data['likedAccount'] = this.likedAccount;
     return data;
-  }
-
-  @override
-  String toString() {
-    // TODO: implement toString
-    return "${this.description} - ${this.authorName} ";
   }
 }
 
