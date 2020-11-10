@@ -58,7 +58,7 @@ class _CommentChildScreenState extends State<CommentChildScreen> {
                 return buildLoading();
               } else if (state is CommentSuccessState) {
                 print("hello");
-                return CommentListComponent(list: state.list);
+                return CommentListComponent(list: state.list,videoID:this.widget.videoId);
                 // return Container();
               } else if (state is CommentFailedState) {
                 return buildFailure(state.message);

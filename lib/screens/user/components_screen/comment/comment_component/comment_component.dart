@@ -155,13 +155,14 @@ class _CommentListComponenttate extends State<CommentChildComponent> {
 
   void postComment() {
     int videoID = this.widget.videoID;
+    print("VideoID $videoID");
     int authorID = MockSession.id;
     if (contentController.text.isEmpty) {
     } else {
       String _content = contentController.text;
 
       CommentPostDTO _dto =
-          CommentPostDTO(authorId: videoID, videoId: authorID, content: _content);
+          CommentPostDTO(authorId:authorID , videoId: videoID, content: _content);
       _postCommentBloc.add(PostCommentButtonPressEvent(dto: _dto));
     }
   }
