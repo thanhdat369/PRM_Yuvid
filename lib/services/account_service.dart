@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:prm_yuvid/mock/mock_session.dart';
 import 'dart:convert';
 
@@ -52,5 +56,34 @@ class AccountApiProvider {
     final responseString = jsonDecode(response.body);
     print(AccountSignUpDTO.fromJson(responseString));
     return AccountSignUpDTO.fromJson(responseString);
+  }
+
+  Future<bool> editAvt(File imageFile) async {
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts/${MockSession.id}/avatar";
+    var request = http.MultipartRequest('PUT', Uri.parse(baseUrl));
+    Map<String, String> headers = {"Content-type": "multipart/form-data"};
+    request.headers.addAll(headers);
+    print(imageFile.path);
+    request.files.add(await http.MultipartFile(
+      'avatarFile',
+      imageFile.readAsBytes().asStream(),
+      imageFile.lengthSync(),
+      filename: imageFile.path.split('/').last,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+
+    try {
+      var streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      print("RESS " + response.body);
+      if (response.statusCode == 204) {
+        return true;
+      } else
+        return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }
