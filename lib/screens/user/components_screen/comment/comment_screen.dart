@@ -1,13 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/blocs/comment/comment_bloc.dart';
+import 'package:prm_yuvid/screens/user/components_screen/comment/comment_component/comment_component.dart';
 import 'package:prm_yuvid/themes/colors.dart';
-
-import 'comment_component/comment_component.dart';
 
 class CommentParent extends StatelessWidget {
   int videoId;
-  CommentParent({Key key, @required this.videoId}) : super(key: key);
+  CommentParent({Key key,this.videoId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _CommentChildScreenState extends State<CommentChildScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: size.height,
+      height:size.height ,
       color: MainColors.kDark,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -57,6 +57,7 @@ class _CommentChildScreenState extends State<CommentChildScreen> {
               } else if (state is CommentLoadingState) {
                 return buildLoading();
               } else if (state is CommentSuccessState) {
+                print("hello");
                 return CommentListComponent(list: state.list);
                 // return Container();
               } else if (state is CommentFailedState) {

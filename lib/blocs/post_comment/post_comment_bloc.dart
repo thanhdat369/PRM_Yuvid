@@ -29,7 +29,7 @@ class PostCommentBloc extends Bloc<PostCommentEvent, PostCommentState> {
         yield PostCommentLoadingState();
         var user = await commmentRepo.postCommentInVideo(event.dto);
         print("??????");
-        yield PostCommentSuccessState();
+        yield PostCommentSuccessState(videoId: event.dto.videoId);
       }
     } catch (e) {
       yield PostCommentFailedState(message: e.toString().substring(10));
