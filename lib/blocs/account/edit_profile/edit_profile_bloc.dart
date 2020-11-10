@@ -21,8 +21,12 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   ) async* {
     if (event is EditProfileClickEvent) {
       yield EditProfileLoadingState();
-      await accountRepo.editProfile(event.accountEditDTO);
-      yield EditProfileSuccessState();
+      bool isSuccess = await accountRepo.editProfile(event.accountEditDTO);
+      if (isSuccess) {
+        yield EditProfileSuccessState();
+      } else {
+        yield EditProfileFailedState();
+      }
     }
   }
 }

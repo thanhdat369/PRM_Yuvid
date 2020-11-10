@@ -25,6 +25,7 @@ class RoundedInputField extends StatelessWidget {
       decoration: BoxDecoration(
         color: MainColors.kSoftLight.withOpacity(0.2),
         borderRadius: BorderRadius.all(Radius.circular(4)),
+        
       ),
       child: TextField(
         style: TextStyle(color: MainColors.kLight),

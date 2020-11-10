@@ -11,9 +11,6 @@ class EditProfileInitial extends EditProfileState {}
 
 class EditProfileSuccessState extends EditProfileState {}
 
-class EditProfileFailedState extends EditProfileState {
-  final String message;
-  EditProfileFailedState({@required this.message});
-}
+class EditProfileFailedState extends EditProfileState {}
 
 class EditProfileLoadingState extends EditProfileState {}

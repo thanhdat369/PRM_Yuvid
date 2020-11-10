@@ -17,7 +17,20 @@ class LikeBloc extends Bloc<LikeEvent, LikeState> {
   Stream<LikeState> mapEventToState(
     LikeEvent event,
   ) async* {
-    // TODO: implement mapEventToState
-    print("0000000000000000000000000");
+    if (event is LikeVideoClickEvent) {
+      yield LikeLoadingState();
+      bool isSuccess = false;
+      if (event.isClickLike) {
+        isSuccess =
+            await _likesRepository.likeVideo(event.videoID, event.userID);
+      } else {
+        await _likesRepository.unLikeVideo(event.videoID, event.userID);
+      }
+      if (isSuccess) {
+        yield LikeSuccessState();
+      } else {
+        yield LikeFailedState();
+      }
+    }
   }
 }

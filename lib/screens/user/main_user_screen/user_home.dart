@@ -12,19 +12,27 @@ class UserScreenItem {
 
 class UserHomeScreen extends StatefulWidget {
   int id;
-  UserHomeScreen({Key key, this.id}) : super(key: key);
+  int tabs_id;
+  UserHomeScreen({Key key, this.id, this.tabs_id = 0}) : super(key: key);
 
   @override
   _UserHomeScreenState createState() => _UserHomeScreenState();
 }
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
-  var _currentindex = 1;
+  var _currentindex;
   var _tabs = [
     UserScreenItem("HOME", VideoScreenParent()),
     UserScreenItem("UPLOAD", UploadScreenParent()),
     UserScreenItem("PROFILE", ProfileScreen()),
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentindex = this.widget.tabs_id;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

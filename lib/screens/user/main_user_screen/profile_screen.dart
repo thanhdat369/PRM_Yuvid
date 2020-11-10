@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:prm_yuvid/App.dart';
+import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_profile_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
@@ -9,7 +11,7 @@ class ProfileScreen extends StatelessWidget {
   Widget buildInfomation(String name, {String path = null}) {
     if (path == null) {
       path =
-          "https://q5n8c8q9.rocketcdn.me/wp-content/uploads/2018/08/The-20-Best-Royalty-Free-Music-Sites-in-2018.png";
+          "https://i.pinimg.com/originals/dd/0c/7a/dd0c7aeed07d06e4b4e1a6e4544d57f2.jpg";
     }
     return Column(
       children: [
@@ -17,8 +19,8 @@ class ProfileScreen extends StatelessWidget {
           child: CachedNetworkImage(
             fit: BoxFit.cover,
             imageUrl: path,
-            height: 100.0,
-            width: 100.0,
+            height: 130.0,
+            width: 130.0,
             placeholder: (context, url) => CircularProgressIndicator(),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
@@ -85,28 +87,60 @@ class ProfileScreen extends StatelessWidget {
               child: buildInfomation("Dat Le"),
             ),
             buildFollowInfo(follower: 10, following: 30),
-            Container(
-                width: 140,
-                height: 47,
-                margin: EdgeInsets.only(bottom: 10),
-                decoration:
-                    BoxDecoration(border: Border.all(color: MainColors.kLight)),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditProfileParentScreen()),
-                    );
-                  },
-                  child: Center(
-                    child: Text(
-                      "Edit profile",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            Center(
+              child: Row(
+                children: [
+                  Container(
+                      width: 140,
+                      height: 40,
+                      margin: EdgeInsets.only(bottom: 10, left: 30),
+                      decoration:
+                          BoxDecoration(border: Border.all(color: MainColors.kLight)),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditProfileParentScreen()),
+                          );
+                        },
+                        child: Center(
+                          child: Text(
+                            "Edit profile",
+                            style:
+                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
                     ),
-                  ),
-                )),
+
+                    Container(
+                      width: 140,
+                      height: 40,
+                      margin: EdgeInsets.only(bottom: 10, left: 20),
+                      decoration:
+                          BoxDecoration(border: Border.all(color: MainColors.kLight)),
+                      child: InkWell(
+                        onTap: () {
+                          MockSession.logout();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => App()),
+                          );
+                        },
+                        child: Center(
+                          child: Text(
+                            "Log out",
+                            style:
+                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    ),
+                ],
+              ),
+            ),
             Row(
               children: [
                 Expanded(
