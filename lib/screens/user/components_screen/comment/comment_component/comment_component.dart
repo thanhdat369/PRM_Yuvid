@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/blocs/post_comment/post_comment_bloc.dart';
 import 'package:prm_yuvid/mock/date_time_process.dart';
+import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/models/commentDTO.dart';
 import 'package:prm_yuvid/screens/shared/my_circleavt.dart';
 import 'package:prm_yuvid/screens/user/components_screen/comment/comment_screen.dart';
@@ -18,20 +19,22 @@ import 'package:prm_yuvid/themes/colors.dart';
 
 class CommentListComponent extends StatelessWidget {
   List<CommentReadDTO> list;
-  CommentListComponent({Key key, this.list}) : super(key: key);
+  int videoID;
+  CommentListComponent({Key key, this.list,@required this.videoID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PostCommentBloc(),
-      child: CommentChildComponent(list: list),
+      child: CommentChildComponent(list: list,videoID: videoID),
     );
   }
 }
 
 class CommentChildComponent extends StatefulWidget {
+  int videoID;
   List<CommentReadDTO> list;
-  CommentChildComponent({Key key, this.list}) : super(key: key);
+  CommentChildComponent({Key key, this.list,@required this.videoID}) : super(key: key);
 
   @override
   _CommentListComponenttate createState() => _CommentListComponenttate();
@@ -39,7 +42,6 @@ class CommentChildComponent extends StatefulWidget {
 
 class _CommentListComponenttate extends State<CommentChildComponent> {
   TextEditingController contentController = new TextEditingController();
-  ScrollController controller = new ScrollController();
   PostCommentBloc _postCommentBloc;
   @override
   void initState() {
@@ -62,7 +64,6 @@ class _CommentListComponenttate extends State<CommentChildComponent> {
             child: ListView.builder(
               reverse: true,
               itemCount: widget.list.length,
-              controller: controller,
               itemBuilder: (BuildContext context, int index) {
                 return CommentItem(
                   dto: this.widget.list[index],
@@ -115,7 +116,7 @@ class _CommentListComponenttate extends State<CommentChildComponent> {
                     if (state is PostCommentSuccessState) {
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
-                        return CommentParent(videoId: 1);
+                        return CommentParent(videoId: this.widget.videoID);
                       }));
                     }
                   },
@@ -153,13 +154,14 @@ class _CommentListComponenttate extends State<CommentChildComponent> {
   }
 
   void postComment() {
+    int videoID = this.widget.videoID;
+    int authorID = MockSession.id;
     if (contentController.text.isEmpty) {
     } else {
       String _content = contentController.text;
 
       CommentPostDTO _dto =
-          CommentPostDTO(authorId: 1, videoId: 1, content: _content);
-      //print(_dto);
+          CommentPostDTO(authorId: videoID, videoId: authorID, content: _content);
       _postCommentBloc.add(PostCommentButtonPressEvent(dto: _dto));
     }
   }

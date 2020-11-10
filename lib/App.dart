@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/blocs/auth/auth_bloc.dart';
-import 'package:prm_yuvid/screens/comment/comment_component/comment_component.dart';
-import 'package:prm_yuvid/screens/comment/comment_screen.dart';
 import 'package:prm_yuvid/screens/login_signup/login_screen.dart';
 import 'package:prm_yuvid/screens/login_signup/splash_screen.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/user_home.dart';
@@ -27,10 +25,8 @@ class App extends StatelessWidget {
           primarySwatch: Colors.blue),
       home: BlocProvider(
         create: (context) => AuthBloc()..add(AppStartedEvent()),
-        child: CommentParent(),
-        //AuthenScreen(),
+        child: AuthenScreen(),
         // child: UserHome(),
-                
       ),
     );
 
