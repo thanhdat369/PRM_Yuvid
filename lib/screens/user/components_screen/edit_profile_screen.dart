@@ -90,7 +90,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     } else if (state is EditProfileSuccessState) {
                       return Container();
                     } else if (state is EditProfileFailedState) {
-                      return Text(state.message,
+                      return Text("An error when edit",
                           style: TextStyle(color: Colors.red));
                     } else {
                       return SizedBox.shrink();

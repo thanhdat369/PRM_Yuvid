@@ -30,8 +30,11 @@ class AccountApiProvider {
     };
     final json_body = json.encode(dto);
     print(json_body);
-    // final response =
-    //     await http.post(baseUrl, headers: headers, body: json_body);
+    final response = await http.put(baseUrl, headers: headers, body: json_body);
+    if (response.statusCode == 204)
+      return true;
+    else
+      return false;
   }
 
   Future<AccountSignUpDTO> signup(AccountSignUpDTO dto) async {
