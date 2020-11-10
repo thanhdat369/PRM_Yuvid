@@ -11,14 +11,15 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
 class VideoCard extends StatelessWidget {
-  const VideoCard({Key key}) : super(key: key);
+  final VideoDTO videoDTO;
+  const VideoCard({Key key, this.videoDTO}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: BlocProvider(
         create: (context) => LikeBloc(),
-        child: VideoCardChild(),
+        child: VideoCardChild(videoDTO: videoDTO),
       ),
     );
   }
@@ -41,7 +42,6 @@ class _VideoCardChildState extends State<VideoCardChild> {
   @override
   void initState() {
     super.initState();
-    likeBloc = BlocProvider.of<LikeBloc>(context);
     // _controller = VideoPlayerController.network(widget.videoDTO.src)
     //   ..initialize().then((_) {
     //     setState(() {
@@ -71,6 +71,7 @@ class _VideoCardChildState extends State<VideoCardChild> {
 
   @override
   Widget build(BuildContext context) {
+    likeBloc = BlocProvider.of<LikeBloc>(context);
     return SingleChildScrollView(
         child: Column(children: [
       Container(

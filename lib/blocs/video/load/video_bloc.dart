@@ -23,7 +23,6 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     if (event is VideoFetchEvent) {
       if (state is VideoInitial) {
         try {
-          print("aaaaaaaaaaa");
           var video = await _videoRepo.getVideoByPage(1);
           yield VideoSuccessState(videoDTO: video, page: 1);
         } catch (e) {

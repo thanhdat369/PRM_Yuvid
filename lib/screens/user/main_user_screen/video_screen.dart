@@ -91,6 +91,5 @@ class _VideoScreenState extends State<VideoScreen> {
         videoBloc.add(VideoPagePressEvent(page: this.page - 1));
       }
     }
-    print("---------------\n page $page");
   }
 }
