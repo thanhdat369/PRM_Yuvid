@@ -1,5 +1,8 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prm_yuvid/blocs/video/like/like_bloc.dart';
 import 'package:prm_yuvid/mock/date_time_process.dart';
+import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/models/videoDTO.dart';
 import 'package:prm_yuvid/screens/shared/my_circleavt.dart';
 import 'package:prm_yuvid/screens/user/components_screen/comment/comment_screen.dart';
@@ -7,22 +10,38 @@ import 'package:prm_yuvid/themes/colors.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
-class VideoCard extends StatefulWidget {
-  final VideoDTO videoDTO;
-  VideoCard({this.videoDTO});
+class VideoCard extends StatelessWidget {
+  const VideoCard({Key key}) : super(key: key);
+
   @override
-  _VideoCardState createState() => _VideoCardState();
+  Widget build(BuildContext context) {
+    return Container(
+      child: BlocProvider(
+        create: (context) => LikeBloc(),
+        child: VideoCardChild(),
+      ),
+    );
+  }
 }
 
-class _VideoCardState extends State<VideoCard> {
+class VideoCardChild extends StatefulWidget {
+  final VideoDTO videoDTO;
+  VideoCardChild({this.videoDTO});
+  @override
+  _VideoCardChildState createState() => _VideoCardChildState();
+}
+
+class _VideoCardChildState extends State<VideoCardChild> {
   VideoPlayerController _videoController;
   ChewieController _chewieController;
   bool isLiked;
   bool isPlaying;
+  LikeBloc likeBloc;
 
   @override
   void initState() {
     super.initState();
+    likeBloc = BlocProvider.of<LikeBloc>(context);
     // _controller = VideoPlayerController.network(widget.videoDTO.src)
     //   ..initialize().then((_) {
     //     setState(() {
@@ -118,6 +137,11 @@ class _VideoCardState extends State<VideoCard> {
                 setState(() {
                   isLiked = !isLiked;
                 });
+                this.likeBloc.add(LikeVideoClickEvent(
+                      userID: MockSession.id,
+                      videoID: this.widget.videoDTO.id,
+                      isClickLike: isLiked,
+                    ));
                 //   BlocProvider.of<UploadBloc>(context).add(LikedButtonPressed(
                 //       uid: widget.user, videoReference: widget.videoReference));
               },

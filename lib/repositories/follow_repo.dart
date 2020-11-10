@@ -8,5 +8,5 @@ class FollowRepo {
       followApiService.getAllFollowings(accountId);
 
   Future<List<AccountDTO>> getAllFollowers(int accountId) =>
-      followApiService.getAllFoolower(accountId);
+      followApiService.getAllFollower(accountId);
 }
