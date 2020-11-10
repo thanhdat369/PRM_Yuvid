@@ -30,3 +30,25 @@ class CommentReadDTO {
     return data;
   }
 }
+
+class CommentPostDTO {
+  int authorId;
+  int videoId;
+  String content;
+
+  CommentPostDTO({this.authorId, this.videoId, this.content});
+
+  CommentPostDTO.fromJson(Map<String, dynamic> json) {
+    authorId = json['authorId'];
+    videoId = json['videoId'];
+    content = json['content'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['authorId'] = this.authorId;
+    data['videoId'] = this.videoId;
+    data['content'] = this.content;
+    return data;
+  }
+}
