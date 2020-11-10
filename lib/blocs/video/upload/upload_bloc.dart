@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -22,8 +21,12 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
   ) async* {
     if (event is UploadVideoClickEvent) {
       yield UploadLoadingState();
-      var a = await _videoRepo.upload(event.videoUploadDTO);
-      // yield UploadSuccessState();
+      bool isSucess = await _videoRepo.upload(event.videoUploadDTO);
+      if (isSucess != null && isSucess) {
+        yield UploadSuccessState();
+      } else {
+        yield UploadFailedState();
+      }
     }
   }
 }

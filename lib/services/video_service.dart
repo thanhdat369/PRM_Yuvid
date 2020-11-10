@@ -21,19 +21,28 @@ class VideoAPIService {
     String baseUrl = "https://tiktok-prm.azurewebsites.net/api/videos";
     var request = http.MultipartRequest('POST', Uri.parse(baseUrl));
     Map<String, String> headers = {"Content-type": "multipart/form-data"};
-    request.files.add(http.MultipartFile(
-      'src',
+    request.headers.addAll(headers);
+    request.files.add(await http.MultipartFile(
+      'VideoFile',
       dto.src.readAsBytes().asStream(),
       dto.src.lengthSync(),
       filename: dto.name,
       contentType: MediaType('video', 'mp4'),
     ));
-    request.headers.addAll(headers);
-    request.fields.addAll({
-      "Name": "${dto.name}",
-      "Description": "${dto.description}",
-      "AuthorId": "${dto.authorId}"
-    });
-    print("request: " + request.toString());
+    request.fields['name'] = dto.name;
+    request.fields['Description'] = dto.description;
+    request.fields['AuthorId'] = dto.authorId.toString();
+    try {
+      var streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      print("RESS " + response.body);
+      if (response.statusCode == 201) {
+        return true;
+      } else
+        return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

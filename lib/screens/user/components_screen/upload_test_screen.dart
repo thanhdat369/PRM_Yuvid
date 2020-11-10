@@ -8,6 +8,7 @@ import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/models/videoDTO.dart';
 import 'package:prm_yuvid/screens/user/components/user_rounded_button.dart';
 import 'package:prm_yuvid/screens/user/components/user_rounded_input.dart';
+import 'package:prm_yuvid/screens/user/main_user_screen/user_home.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
 class UploadScreenParent extends StatelessWidget {
@@ -86,23 +87,53 @@ class _UploadScreenState extends State<UploadScreen> {
               child: Icon(Icons.add),
               onPressed: pickVideo,
             ),
-            Center(child: Text(this._video == null ? "" : "Choosed")),
+            Center(
+                child: Text(this._video == null
+                    ? ""
+                    : "Choosed: ${this._video.path.split('/').last} ")),
             UserRoundedButton(
               text: "Upload",
               press: uploadVideo,
-            )
+            ),
+            BlocListener<UploadBloc, UploadState>(
+              listener: (context, state) {
+                if (state is UploadSuccessState) {
+                  Navigator.of(context)
+                      .pushReplacement(MaterialPageRoute(builder: (context) {
+                    return UserHomeScreen();
+                  }));
+                }
+              },
+              child: BlocBuilder<UploadBloc, UploadState>(
+                  builder: (context, state) {
+                if (state is UploadInitial) {
+                  return SizedBox.shrink();
+                } else if (state is UploadLoadingState) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is UploadSuccessState) {
+                  return Container();
+                } else if (state is UploadFailedState) {
+                  return Text("An error when upload video",
+                      style: TextStyle(color: Colors.red));
+                } else {
+                  return SizedBox.shrink();
+                }
+              }),
+            ),
           ],
         ));
   }
 
   void uploadVideo() {
-    VideoUploadDTO videoUploadDTO = VideoUploadDTO(
-      src: this._video,
-      authorId: MockSession.id,
-      name: _namecontroller.text,
-      description: _descriptioncontroller.text,
-    );
-    // _uploadBloc.add(UploadVideoClickEvent(videoUploadDTO: videoUploadDTO));
+    if (this._video != null && this._namecontroller.text.isNotEmpty) {
+      VideoUploadDTO videoUploadDTO = VideoUploadDTO(
+        src: this._video,
+        authorId: MockSession.id,
+        name: _namecontroller.text,
+        description: _descriptioncontroller.text,
+      );
+      _uploadBloc.add(UploadVideoClickEvent(videoUploadDTO: videoUploadDTO));
+    }
     // print(_namecontroller.text);
     // print(_descriptioncontroller.text);
     // print(this._image);
