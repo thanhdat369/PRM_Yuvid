@@ -35,7 +35,7 @@ class VideoCardChild extends StatefulWidget {
 class _VideoCardChildState extends State<VideoCardChild> {
   VideoPlayerController _videoController;
   ChewieController _chewieController;
-  bool isLiked;
+  bool _isLiked;
   bool isPlaying;
   LikeBloc likeBloc;
 
@@ -65,7 +65,7 @@ class _VideoCardChildState extends State<VideoCardChild> {
       autoInitialize: true,
     );
 
-    isLiked = true;
+    _isLiked = this.widget.videoDTO.likedAccount.contains(MockSession.id);
     isPlaying = true;
   }
 
@@ -108,7 +108,6 @@ class _VideoCardChildState extends State<VideoCardChild> {
       ),
       GestureDetector(
         onTap: () {
-          print("hello");
           setState(() {
             if (isPlaying) {
               _chewieController.pause();
@@ -130,21 +129,19 @@ class _VideoCardChildState extends State<VideoCardChild> {
           children: <Widget>[
             FloatingActionButton(
               child: Icon(
-                isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                _isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
                 color: Colors.blueAccent,
                 size: 33.0,
               ),
               onPressed: () {
                 setState(() {
-                  isLiked = !isLiked;
+                  _isLiked = !_isLiked;
                 });
                 this.likeBloc.add(LikeVideoClickEvent(
                       userID: MockSession.id,
                       videoID: this.widget.videoDTO.id,
-                      isClickLike: isLiked,
+                      isClickLike: _isLiked,
                     ));
-                //   BlocProvider.of<UploadBloc>(context).add(LikedButtonPressed(
-                //       uid: widget.user, videoReference: widget.videoReference));
               },
               heroTag: "favourite",
               backgroundColor: Colors.white,
