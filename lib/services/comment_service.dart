@@ -24,4 +24,23 @@ class CommentService {
             .toList();
     return _list;
   }
+
+  Future<CommentPostDTO> postCommentInVideo(CommentPostDTO dto) async {
+    String baseUrl = "https://tiktok-prm.azurewebsites.net/api/comments";
+  
+    Map<String, String> headers = {
+      "Content-type": "application/json-patch+json"
+    };
+
+    final json_body = json.encode(dto);
+    print(json_body);
+    print("service");
+    final response = await http.post(baseUrl, headers: headers, body: json_body);
+    if(response.body.contains("Error")) throw Exception("Error!!!");
+
+    final responseString = jsonDecode(response.body);
+    print(CommentPostDTO.fromJson(responseString));
+    return CommentPostDTO.fromJson(responseString);
+
+  }
 }

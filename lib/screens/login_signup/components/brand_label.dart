@@ -6,7 +6,7 @@ class BrandLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 5, bottom: 20),
+        margin: EdgeInsets.only(top: 5, bottom: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -22,7 +22,7 @@ class BrandLabel extends StatelessWidget {
                   textAlign: TextAlign.center),
             ),
             Container(
-              height: 17,
+              height: 24,
               child: Text("Share and play video ",
                   style: const TextStyle(
                       fontWeight: FontWeight.normal,

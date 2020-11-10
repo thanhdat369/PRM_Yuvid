@@ -60,6 +60,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 RoundedInputField(
                   hintText: "Enter Fullname",
+                  icon: Icons.person_add_alt_1,
                   textEditingController: fullnameController,
                 ),
                 RoundedPasswordField(
@@ -74,6 +75,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 RoundedInputField(
                   hintText: "Enter bio",
+                  icon: Icons.person_pin_rounded,
                   textEditingController: bioController,
                 ),
                 // Row(
@@ -103,14 +105,14 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Text(
                   "Already have an account? ",
-                  style: TextStyle(height: 2, fontSize: 18),
+                  style: TextStyle(height: 2, fontSize: 15),
                 ),
                 GestureDetector(
                   child: Text("Login",
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: MainColors.kMain,
-                          fontSize: 20,
+                          fontSize: 18,
                           height: 2,
                           decoration: TextDecoration.underline)),
                   onTap: () {
