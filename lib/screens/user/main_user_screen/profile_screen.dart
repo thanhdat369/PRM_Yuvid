@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/App.dart';
+import 'package:prm_yuvid/blocs/account/profile/profile_bloc.dart';
 import 'package:prm_yuvid/mock/mock_session.dart';
+import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_avt_screen.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_profile_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
@@ -11,7 +14,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileScreenChild();
+    return BlocProvider(
+      create: (context) => ProfileBloc(),
+      child: ProfileScreenChild(),
+    );
   }
 }
 
@@ -23,10 +29,26 @@ class ProfileScreenChild extends StatefulWidget {
 }
 
 class _ProfileScreenChildState extends State<ProfileScreenChild> {
-  Widget buildInfomation(String name, {String path = null}) {
-    if (path == null) {
-      path =
-          "https://i.pinimg.com/originals/dd/0c/7a/dd0c7aeed07d06e4b4e1a6e4544d57f2.jpg";
+  ProfileBloc profileBloc;
+  AccountDTO accountDTO;
+  @override
+  void initState() {
+    super.initState();
+    profileBloc = BlocProvider.of(context);
+    profileBloc.add(FetchProfileEvent(accountId: MockSession.id));
+    accountDTO = AccountDTO();
+  }
+
+  Widget buildInfomation({AccountDTO accountDTO}) {
+    if (accountDTO == null) {
+      return Container();
+    }
+    if (accountDTO.avatarSrc == null) {
+      accountDTO.avatarSrc =
+          "https://www.daunhotsinopec.com/public/front-end/images/avatar.jpg";
+    }
+    if (accountDTO.name == null) {
+      accountDTO.name = "No Name";
     }
     return Column(
       children: [
@@ -40,7 +62,7 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
           child: ClipOval(
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: path,
+              imageUrl: accountDTO.avatarSrc,
               height: 130.0,
               width: 130.0,
               placeholder: (context, url) => CircularProgressIndicator(),
@@ -51,10 +73,30 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
         Container(
           margin: EdgeInsets.only(top: 20, bottom: 20),
           child: Text(
-            name,
+            accountDTO.name,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: Text(
+                accountDTO.email ?? "",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: Text(
+                accountDTO.bio ?? "",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
@@ -99,138 +141,108 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: MainColors.kDark,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: buildInfomation("Dat Le"),
-            ),
-            buildFollowInfo(follower: 10, following: 30),
-            Center(
-              child: Row(
-                children: [
-                  Container(
-                      width: 140,
-                      height: 40,
-                      margin: EdgeInsets.only(bottom: 10, left: 30),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: MainColors.kLight)),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    EditProfileParentScreen()),
-                          );
-                        },
-                        child: Center(
-                          child: Text(
-                            "Edit profile",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      )),
-                  Container(
-                      width: 140,
-                      height: 40,
-                      margin: EdgeInsets.only(bottom: 10, left: 20),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: MainColors.kLight)),
-                      child: InkWell(
-                        onTap: () {
-                          MockSession.logout();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => App()),
-                          );
-                        },
-                        child: Center(
-                          child: Text(
-                            "Log out",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      )),
-                ],
-              ),
-            ),
-            Row(
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        if (state is ProfileLoadingState) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state is ProfileFailedState) {
+          return Center(
+              child: Text(state.message,
+                  style: TextStyle(color: Colors.red, fontSize: 20)));
+        } else if (state is ProfileSuccessState) {
+          this.accountDTO = state.dto;
+          print(accountDTO.name);
+          // setState(() {});
+        }
+        return SafeArea(
+          child: Container(
+            color: MainColors.kDark,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Container(
-                    height: 160,
-                    decoration: BoxDecoration(
-                        color: Colors.black26,
-                        border: Border.all(color: Colors.white70, width: .5)),
-                    child: FittedBox(
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        imageUrl:
-                            "https://media.giphy.com/media/Ii4Cv63yG9iYawDtKC/giphy.gif",
-                        placeholder: (context, url) => Padding(
-                          padding: const EdgeInsets.all(35.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: buildInfomation(accountDTO: this.accountDTO),
                 ),
-                Expanded(
-                  child: Container(
-                    height: 160,
-                    decoration: BoxDecoration(
-                        color: Colors.black26,
-                        border: Border.all(color: Colors.white70, width: .5)),
-                    child: FittedBox(
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        imageUrl:
-                            "https://media.giphy.com/media/tqfS3mgQU28ko/giphy.gif",
-                        placeholder: (context, url) => Padding(
-                          padding: const EdgeInsets.all(35.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 160,
-                    decoration: BoxDecoration(
-                        color: Colors.black26,
-                        border: Border.all(color: Colors.white70, width: .5)),
-                    child: FittedBox(
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        imageUrl:
-                            "https://media.giphy.com/media/3o72EX5QZ9N9d51dqo/giphy.gif",
-                        placeholder: (context, url) => Padding(
-                          padding: const EdgeInsets.all(35.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-                      fit: BoxFit.fill,
-                    ),
+                buildFollowInfo(follower: 10, following: 30),
+                Center(
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 140,
+                          height: 40,
+                          margin: EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: MainColors.kLight)),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditProfileParentScreen()),
+                              );
+                            },
+                            child: Center(
+                              child: Text(
+                                "Edit profile",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )),
+                      Container(
+                          width: 140,
+                          height: 40,
+                          margin: EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: MainColors.kLight)),
+                          child: InkWell(
+                            onTap: () {
+                              MockSession.logout();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => App()),
+                              );
+                            },
+                            child: Center(
+                              child: Text(
+                                "My video",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )),
+                      Container(
+                          width: 140,
+                          height: 40,
+                          margin: EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: MainColors.kLight)),
+                          child: InkWell(
+                            onTap: () {
+                              MockSession.logout();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => App()),
+                              );
+                            },
+                            child: Center(
+                              child: Text(
+                                "Log out",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )),
+                    ],
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

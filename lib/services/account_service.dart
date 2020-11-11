@@ -86,4 +86,18 @@ class AccountApiProvider {
       return false;
     }
   }
+
+  Future<AccountDTO> getAccountByID(int userid) async {
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts/${userid}";
+    Map<String, String> headers = {
+      "Content-type": "application/json-patch+json"
+    };
+    final response = await http.get(baseUrl);
+    if (response.statusCode == 404) {
+      throw Exception("Not Found userId");
+    }
+    final responseString = jsonDecode(response.body);
+    return AccountDTO.fromJson(responseString);
+  }
 }
