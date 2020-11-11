@@ -14,4 +14,6 @@ class AccountRepository {
   Future<AccountSignUpDTO> signup(AccountSignUpDTO dto) =>
       accountApiProvider.signup(dto);
   Future<bool> editAvt(File imageFile) => accountApiProvider.editAvt(imageFile);
+  Future<AccountDTO> getAccountByID(int userid) =>
+      accountApiProvider.getAccountByID(userid);
 }
