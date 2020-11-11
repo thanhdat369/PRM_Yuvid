@@ -13,7 +13,7 @@ class UserScreenItem {
 class UserHomeScreen extends StatefulWidget {
   int id;
   int tabs_id;
-  UserHomeScreen({Key key, this.id, this.tabs_id = 0}) : super(key: key);
+  UserHomeScreen({Key key, this.id, this.tabs_id = 1}) : super(key: key);
 
   @override
   _UserHomeScreenState createState() => _UserHomeScreenState();
@@ -30,7 +30,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentindex = this.widget.tabs_id;
+    _currentindex = 0;
   }
 
   @override

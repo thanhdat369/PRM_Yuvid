@@ -39,13 +39,16 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
     accountDTO = AccountDTO();
   }
 
-  Widget buildInfomation({String name, String path = null}) {
-    if (path == null) {
-      path =
+  Widget buildInfomation({AccountDTO accountDTO}) {
+    if (accountDTO == null) {
+      return Container();
+    }
+    if (accountDTO.avatarSrc == null) {
+      accountDTO.avatarSrc =
           "https://www.daunhotsinopec.com/public/front-end/images/avatar.jpg";
     }
-    if (name == null) {
-      name = "No Name";
+    if (accountDTO.name == null) {
+      accountDTO.name = "No Name";
     }
     return Column(
       children: [
@@ -59,7 +62,7 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
           child: ClipOval(
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: path,
+              imageUrl: accountDTO.avatarSrc,
               height: 130.0,
               width: 130.0,
               placeholder: (context, url) => CircularProgressIndicator(),
@@ -70,10 +73,30 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
         Container(
           margin: EdgeInsets.only(top: 20, bottom: 20),
           child: Text(
-            name,
+            accountDTO.name,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: Text(
+                accountDTO.email ?? "",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: Text(
+                accountDTO.bio ?? "",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
@@ -122,10 +145,13 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
       builder: (context, state) {
         if (state is ProfileLoadingState) {
           return Center(child: CircularProgressIndicator());
+        } else if (state is ProfileFailedState) {
+          return Center(
+              child: Text(state.message,
+                  style: TextStyle(color: Colors.red, fontSize: 20)));
         } else if (state is ProfileSuccessState) {
           this.accountDTO = state.dto;
           print(accountDTO.name);
-
           // setState(() {});
         }
         return SafeArea(
@@ -136,17 +162,16 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: buildInfomation(
-                      name: accountDTO.name, path: accountDTO.avatarSrc),
+                  child: buildInfomation(accountDTO: this.accountDTO),
                 ),
                 buildFollowInfo(follower: 10, following: 30),
                 Center(
-                  child: Row(
+                  child: Column(
                     children: [
                       Container(
                           width: 140,
                           height: 40,
-                          margin: EdgeInsets.only(bottom: 10, left: 30),
+                          margin: EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
                               border: Border.all(color: MainColors.kLight)),
                           child: InkWell(
@@ -169,7 +194,29 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
                       Container(
                           width: 140,
                           height: 40,
-                          margin: EdgeInsets.only(bottom: 10, left: 20),
+                          margin: EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: MainColors.kLight)),
+                          child: InkWell(
+                            onTap: () {
+                              MockSession.logout();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => App()),
+                              );
+                            },
+                            child: Center(
+                              child: Text(
+                                "My video",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )),
+                      Container(
+                          width: 140,
+                          height: 40,
+                          margin: EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
                               border: Border.all(color: MainColors.kLight)),
                           child: InkWell(
