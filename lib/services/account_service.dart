@@ -100,4 +100,17 @@ class AccountApiProvider {
     final responseString = jsonDecode(response.body);
     return AccountDTO.fromJson(responseString);
   }
+
+  Future<List<AccountDTO>> getAccountByName(String search) async {
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts?page=0&limit=0&searchValue=${search}";
+    Map<String, String> headers = {
+      "Content-type": "application/json-patch+json"
+    };
+    final response = await http.get(baseUrl);
+    final responseString = jsonDecode(response.body)['result'] as List;
+    List<AccountDTO> listAccount =
+        responseString.map((p) => AccountDTO.fromJson(p)).toList();
+    return listAccount;
+  }
 }
