@@ -54,7 +54,8 @@ class _VideoCardChildState extends State<VideoCardChild> {
 
     _chewieController = ChewieController(
       videoPlayerController: _videoController,
-      aspectRatio: _videoController.value.aspectRatio,
+      // aspectRatio: _videoController.value.aspectRatio,
+      aspectRatio: 16 / 9,
       autoPlay: true,
       looping: true,
 
@@ -72,9 +73,11 @@ class _VideoCardChildState extends State<VideoCardChild> {
   @override
   Widget build(BuildContext context) {
     likeBloc = BlocProvider.of<LikeBloc>(context);
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
         child: Column(children: [
       Container(
+        padding: EdgeInsets.all(20),
         alignment: Alignment.topLeft,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,21 +85,35 @@ class _VideoCardChildState extends State<VideoCardChild> {
             Row(
               children: <Widget>[
                 MyCircleAvatar(
+                  imgPath: this.widget.videoDTO.avatarSrc,
+                  userID: this.widget.videoDTO.authorId,
                   radius: 20,
                 ),
-                Text(widget.videoDTO.authorName == null
-                    ? ""
-                    : widget.videoDTO.authorName),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.videoDTO.authorName == null
+                            ? ""
+                            : widget.videoDTO.authorName,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        widget.videoDTO.createdAt == null
+                            ? ""
+                            : getDateTime(widget.videoDTO.createdAt),
+                        style: TextStyle(color: MainColors.kSoftLight),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             Text(widget.videoDTO.name == null ? "" : widget.videoDTO.name,
                 style: TextStyle(color: MainColors.kSoftLight, fontSize: 20)),
-            Text(
-              widget.videoDTO.createdAt == null
-                  ? ""
-                  : getDateTime(widget.videoDTO.createdAt),
-              style: TextStyle(color: MainColors.kSoftLight),
-            ),
             Text(
               widget.videoDTO.description == null
                   ? ""
@@ -117,10 +134,11 @@ class _VideoCardChildState extends State<VideoCardChild> {
             isPlaying = !isPlaying;
           });
         },
-        child: Center(
+        child: Container(
+            height: size.height * 0.4,
             child: Chewie(
-          controller: _chewieController,
-        )),
+              controller: _chewieController,
+            )),
       ),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -129,9 +147,9 @@ class _VideoCardChildState extends State<VideoCardChild> {
           children: <Widget>[
             FloatingActionButton(
               child: Icon(
-                _isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
-                color: Colors.blueAccent,
-                size: 33.0,
+                _isLiked ? Icons.favorite : Icons.favorite_border_outlined,
+                color: MainColors.kReact,
+                size: 45.0,
               ),
               onPressed: () {
                 setState(() {
@@ -144,16 +162,15 @@ class _VideoCardChildState extends State<VideoCardChild> {
                     ));
               },
               heroTag: "favourite",
-              backgroundColor: Colors.white,
+              backgroundColor: MainColors.kSoftDark,
             ),
             FloatingActionButton(
               child: Icon(
                 Icons.comment,
-                color: Colors.blue,
+                color: MainColors.kReact,
                 size: 33.0,
               ),
               onPressed: () {
-                print("hello");
                 Navigator.push(
                   context,
                   MaterialPageRoute(

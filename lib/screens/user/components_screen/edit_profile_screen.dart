@@ -8,19 +8,21 @@ import 'package:prm_yuvid/screens/user/components_screen/user_screen_back_button
 import 'package:prm_yuvid/themes/colors.dart';
 
 class EditProfileParentScreen extends StatelessWidget {
-  const EditProfileParentScreen({Key key}) : super(key: key);
+  final AccountDTO accountDTO;
+  const EditProfileParentScreen({Key key, this.accountDTO}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => EditProfileBloc(),
-      child: EditProfileScreen(),
+      child: EditProfileScreen(accountDTO: this.accountDTO),
     );
   }
 }
 
 class EditProfileScreen extends StatefulWidget {
-  EditProfileScreen({Key key}) : super(key: key);
+  AccountDTO accountDTO;
+  EditProfileScreen({Key key, this.accountDTO}) : super(key: key);
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -35,6 +37,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if (this.widget.accountDTO != null) {
+      this._namecontroller.text = this.widget.accountDTO.name;
+      this._emailcontroller.text = this.widget.accountDTO.email;
+      this._biocontroller.text = this.widget.accountDTO.bio;
+    }
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
   }
 
@@ -50,7 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: Text("UPLOAD VIDEO",
+                  child: Text("EDIT PROFILE",
                       style: TextStyle(
                           color: MainColors.kMain,
                           fontSize: 30,

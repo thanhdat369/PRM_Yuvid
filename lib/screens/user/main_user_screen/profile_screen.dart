@@ -180,7 +180,9 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        EditProfileParentScreen()),
+                                        EditProfileParentScreen(
+                                          accountDTO: this.accountDTO,
+                                        )),
                               );
                             },
                             child: Center(

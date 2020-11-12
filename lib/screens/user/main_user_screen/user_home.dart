@@ -30,7 +30,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentindex = 0;
+    _currentindex = this.widget.tabs_id;
   }
 
   @override
