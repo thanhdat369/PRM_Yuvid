@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:prm_yuvid/blocs/account/search_account/search_account_bloc.dart';
 import 'package:prm_yuvid/screens/user/components_screen/upload_test_screen.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/profile_screen.dart';
+import 'package:prm_yuvid/screens/user/main_user_screen/search_user_screen.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/video_screen.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
@@ -25,6 +27,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     UserScreenItem("HOME", VideoScreenParent()),
     UserScreenItem("UPLOAD", UploadScreenParent()),
     UserScreenItem("PROFILE", ProfileScreen()),
+    UserScreenItem("SEARCH USER", SearchAccountScreenParent()),
   ];
   @override
   void initState() {
@@ -75,6 +78,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               BottomNavigationBarItem(label: "UPLOAD", icon: Icon(Icons.add)),
               BottomNavigationBarItem(
                   label: "PROFILE", icon: Icon(Icons.account_box)),
+              BottomNavigationBarItem(
+                  label: "SEARCH", icon: Icon(Icons.search)),
             ],
           )),
     );
