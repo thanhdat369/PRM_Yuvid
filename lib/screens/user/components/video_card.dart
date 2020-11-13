@@ -112,13 +112,19 @@ class _VideoCardChildState extends State<VideoCardChild> {
                 ),
               ],
             ),
-            Text(widget.videoDTO.name == null ? "" : widget.videoDTO.name,
-                style: TextStyle(color: MainColors.kSoftLight, fontSize: 20)),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0, top: 10),
+              child: Text(
+                  widget.videoDTO.name == null ? "" : widget.videoDTO.name,
+                  style: TextStyle(color: MainColors.kSoftLight, fontSize: 20)),
+            ),
             Text(
               widget.videoDTO.description == null
                   ? ""
                   : widget.videoDTO.description,
-              style: TextStyle(color: MainColors.kSoftLight),
+              style: TextStyle(color: MainColors.kSoftLight, fontSize: 18),
+              maxLines: 3,
+              overflow: TextOverflow.fade,
             ),
           ],
         ),
@@ -141,7 +147,7 @@ class _VideoCardChildState extends State<VideoCardChild> {
             )),
       ),
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 50),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
