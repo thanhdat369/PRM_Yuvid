@@ -45,4 +45,15 @@ class VideoAPIService {
       return false;
     }
   }
+
+  Future<List<VideoDTO>> getVideoByUserID(int userID) async {
+    final successCode = 200;
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts/${userID}/videos";
+    final response = await http.get(baseUrl);
+    final responseString = jsonDecode(response.body) as List;
+    List<VideoDTO> videos =
+        responseString.map((p) => VideoDTO.fromJson(p)).toList();
+    return videos;
+  }
 }

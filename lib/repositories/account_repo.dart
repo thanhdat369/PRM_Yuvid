@@ -16,4 +16,6 @@ class AccountRepository {
   Future<bool> editAvt(File imageFile) => accountApiProvider.editAvt(imageFile);
   Future<AccountDTO> getAccountByID(int userid) =>
       accountApiProvider.getAccountByID(userid);
+  Future<List<AccountDTO>> getAccountByName(String search) =>
+      accountApiProvider.getAccountByName(search);
 }
