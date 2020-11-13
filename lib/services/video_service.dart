@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:prm_yuvid/mock/mock_session.dart';
 import 'dart:convert';
 import 'package:prm_yuvid/models/videoDTO.dart';
 
@@ -50,6 +51,17 @@ class VideoAPIService {
     final successCode = 200;
     String baseUrl =
         "https://tiktok-prm.azurewebsites.net/api/accounts/${userID}/videos";
+    final response = await http.get(baseUrl);
+    final responseString = jsonDecode(response.body) as List;
+    List<VideoDTO> videos =
+        responseString.map((p) => VideoDTO.fromJson(p)).toList();
+    return videos;
+  }
+
+  Future<List<VideoDTO>> getVideoLiked() async {
+    final successCode = 200;
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts/${MockSession.id}/liked/videos";
     final response = await http.get(baseUrl);
     final responseString = jsonDecode(response.body) as List;
     List<VideoDTO> videos =

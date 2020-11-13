@@ -8,4 +8,5 @@ class VideoRepo {
   Future<bool> upload(VideoUploadDTO dto) => videoAPIService.upload(dto);
   Future<List<VideoDTO>> getVideoByUserID(int userID) =>
       videoAPIService.getVideoByUserID(userID);
+  Future<List<VideoDTO>> getVideoLiked() => videoAPIService.getVideoLiked();
 }
