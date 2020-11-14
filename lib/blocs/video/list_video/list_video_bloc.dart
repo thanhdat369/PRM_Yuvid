@@ -29,6 +29,9 @@ class ListVideoBloc extends Bloc<ListVideoEvent, ListVideoState> {
           List<VideoDTO> listVideo =
               await _videoRepo.getVideoByUserID(event.userID);
           yield ListVideoSuccessState(list_video: listVideo);
+        } else if (event.mode == FetchListVideoEvent.FOLLOWING_VIDEO_MODE) {
+          List<VideoDTO> listVideo = await _videoRepo.getVideoFollowing();
+          yield ListVideoSuccessState(list_video: listVideo);
         }
       } catch (e) {
         yield ListVideoFailedState(message: e.toString());

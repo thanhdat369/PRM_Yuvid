@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/blocs/account/edit_profile/edit_profile_bloc.dart';
+import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/user/components/user_rounded_button.dart';
 import 'package:prm_yuvid/screens/user/components/user_rounded_input.dart';
 import 'package:prm_yuvid/screens/user/components_screen/user_screen_back_button.dart';
+import 'package:prm_yuvid/screens/user/main_user_screen/user_home.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
 class EditProfileParentScreen extends StatelessWidget {
@@ -85,7 +87,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 BlocListener<EditProfileBloc, EditProfileState>(
                   listener: (context, state) {
                     if (state is EditProfileSuccessState) {
-                      Navigator.pop(context);
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
+                        return UserHomeScreen(
+                          id: MockSession.id,
+                          tabs_id: 3,
+                        );
+                      }));
                     }
                   },
                   child: BlocBuilder<EditProfileBloc, EditProfileState>(
