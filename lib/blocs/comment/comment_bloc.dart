@@ -10,10 +10,9 @@ part 'comment_event.dart';
 part 'comment_state.dart';
 
 class CommentBloc extends Bloc<CommentEvent, CommentState> {
-  
   CommentRepo commentRepo;
   List<CommentReadDTO> list = List();
-  
+
   CommentBloc() : super(CommentInitial()) {
     this.commentRepo = CommentRepo();
   }
@@ -35,6 +34,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         yield CommentSuccessState(list: list);
       }
     } catch (e) {
+      print(e);
       yield CommentFailedState(message: e.toString().substring(10));
     }
   }
