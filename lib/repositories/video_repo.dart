@@ -9,4 +9,6 @@ class VideoRepo {
   Future<List<VideoDTO>> getVideoByUserID(int userID) =>
       videoAPIService.getVideoByUserID(userID);
   Future<List<VideoDTO>> getVideoLiked() => videoAPIService.getVideoLiked();
+  Future<List<VideoDTO>> getVideoFollowing() =>
+      videoAPIService.getVideoFollowing();
 }

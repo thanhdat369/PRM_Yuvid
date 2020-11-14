@@ -68,4 +68,14 @@ class VideoAPIService {
         responseString.map((p) => VideoDTO.fromJson(p)).toList();
     return videos;
   }
+
+  Future<List<VideoDTO>> getVideoFollowing() async {
+    String baseUrl =
+        "https://tiktok-prm.azurewebsites.net/api/accounts/${MockSession.id}/followings/videos";
+    final response = await http.get(baseUrl);
+    final responseString = jsonDecode(response.body) as List;
+    List<VideoDTO> videos =
+        responseString.map((p) => VideoDTO.fromJson(p)).toList();
+    return videos;
+  }
 }

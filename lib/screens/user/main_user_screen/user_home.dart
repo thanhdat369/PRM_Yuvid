@@ -26,8 +26,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   var _tabs = [
     UserScreenItem("HOME", VideoScreenParent()),
     UserScreenItem("UPLOAD", UploadScreenParent()),
-    UserScreenItem("PROFILE", ProfileScreen()),
     UserScreenItem("SEARCH USER", SearchAccountScreenParent()),
+    UserScreenItem("PROFILE", ProfileScreen()),
   ];
   @override
   void initState() {
@@ -77,9 +77,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               ),
               BottomNavigationBarItem(label: "UPLOAD", icon: Icon(Icons.add)),
               BottomNavigationBarItem(
-                  label: "PROFILE", icon: Icon(Icons.account_box)),
-              BottomNavigationBarItem(
                   label: "SEARCH", icon: Icon(Icons.search)),
+              BottomNavigationBarItem(
+                  label: "PROFILE", icon: Icon(Icons.account_box)),
             ],
           )),
     );
