@@ -7,6 +7,7 @@ import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_avt_screen.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_profile_screen.dart';
+import 'package:prm_yuvid/screens/user/main_user_screen/my_video.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -201,10 +202,11 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
                               border: Border.all(color: MainColors.kLight)),
                           child: InkWell(
                             onTap: () {
-                              MockSession.logout();
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => App()),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyVideoParentScreen()),
                               );
                             },
                             child: Center(
@@ -224,10 +226,10 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
                           child: InkWell(
                             onTap: () {
                               MockSession.logout();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => App()),
-                              );
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                return App();
+                              }));
                             },
                             child: Center(
                               child: Text(
