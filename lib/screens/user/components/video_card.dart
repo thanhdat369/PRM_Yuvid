@@ -152,6 +152,7 @@ class _VideoCardChildState extends State<VideoCardChild> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             FloatingActionButton(
+              heroTag: null,
               child: Icon(
                 _isLiked ? Icons.favorite : Icons.favorite_border_outlined,
                 color: MainColors.kReact,
@@ -167,10 +168,10 @@ class _VideoCardChildState extends State<VideoCardChild> {
                       isClickLike: _isLiked,
                     ));
               },
-              heroTag: "favourite",
               backgroundColor: MainColors.kSoftDark,
             ),
             FloatingActionButton(
+              heroTag: null,
               child: Icon(
                 Icons.comment,
                 color: MainColors.kReact,
@@ -185,7 +186,6 @@ class _VideoCardChildState extends State<VideoCardChild> {
                           )),
                 );
               },
-              heroTag: "share",
               backgroundColor: Colors.white,
             ),
           ],

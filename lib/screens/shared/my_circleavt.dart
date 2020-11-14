@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prm_yuvid/mock/mock_session.dart';
+import 'package:prm_yuvid/screens/user/components_screen/other_user_profile.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/user_home.dart';
 
 class MyCircleAvatar extends StatelessWidget {
@@ -22,11 +23,14 @@ class MyCircleAvatar extends StatelessWidget {
           if (this.userID == MockSession.id) {
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (context) {
-              return UserHomeScreen(id: MockSession.id, tabs_id: 2);
+              return UserHomeScreen(id: MockSession.id, tabs_id: 3);
             }));
           } else {
             // TODO Chuyen ve trang
             print("USER ID ");
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return OtherUserProfileParentScreen(accountID: this.userID);
+            }));
           }
         }
       },
