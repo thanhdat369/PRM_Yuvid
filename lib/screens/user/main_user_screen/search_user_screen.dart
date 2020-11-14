@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:prm_yuvid/blocs/account/search_account/search_account_bloc.dart';
 import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/shared/my_circleavt.dart';
+import 'package:prm_yuvid/screens/user/components/list_user_component.dart';
 import 'package:prm_yuvid/screens/user/components/user_rounded_input.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
@@ -79,7 +80,7 @@ class _SearchAccountScreenState extends State<SearchAccountScreen> {
                 } else if (state is SearchAccountLoadingState) {
                   return Center(child: CircularProgressIndicator());
                 } else if (state is SearchAccountSuccessState) {
-                  return buildingListAccount(state.list_dto);
+                  return ListAccountComponent(list_user: state.list_dto);
                 } else if (state is SearchAccountFailedState) {
                   return Text("An error when Search Account",
                       style: TextStyle(color: Colors.red));
