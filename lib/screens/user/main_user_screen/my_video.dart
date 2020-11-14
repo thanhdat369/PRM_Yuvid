@@ -40,10 +40,10 @@ class _MyVideoScreenState extends State<MyVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return UserScreenBackButton(
         title: "My Video",
-        child: Container(
-          alignment: Alignment.center,
+        child: SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +55,10 @@ class _MyVideoScreenState extends State<MyVideoScreen> {
                   } else if (state is ListVideoLoadingState) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is ListVideoSuccessState) {
-                    return ListVideoComponent(list: state.list_video);
+                    return Container(
+                        width: size.width,
+                        height: size.height * 0.9,
+                        child: ListVideoComponent(list: state.list_video));
                   } else if (state is ListVideoFailedState) {
                     return Text("An error when loading video",
                         style: TextStyle(color: Colors.red));
