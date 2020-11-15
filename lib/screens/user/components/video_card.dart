@@ -45,15 +45,10 @@ class _VideoCardChildState extends State<VideoCardChild> {
   @override
   void initState() {
     super.initState();
-    // _controller = VideoPlayerController.network(widget.videoDTO.src)
-    //   ..initialize().then((_) {
-    //     setState(() {
-    //       _controller.play();
-    //     });
-    //   });
-    // _videoController = VideoPlayerController.network(widget.videoDTO.src);
-    _videoController = VideoPlayerController.network(
-        "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4");
+
+    _videoController = VideoPlayerController.network(widget.videoDTO.src);
+    // _videoController = VideoPlayerController.network(
+    //     "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4");
 
     _chewieController = ChewieController(
       videoPlayerController: _videoController,
