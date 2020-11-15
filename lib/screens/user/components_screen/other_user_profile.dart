@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/blocs/account/profile/profile_bloc.dart';
+import 'package:prm_yuvid/blocs/follow/follow_counter/follow_counter_bloc.dart';
+import 'package:prm_yuvid/blocs/follow/follow_user/follow_user_bloc.dart';
 import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/user/components_screen/other_user_video.dart';
 import 'package:prm_yuvid/screens/user/components_screen/user_screen_back_button.dart';
@@ -18,6 +20,12 @@ class OtherUserProfileParentScreen extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => ProfileBloc(),
+        ),
+        BlocProvider(
+          create: (context) => FollowCounterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => FollowUserBloc(),
         )
       ],
       child: OtherUserProfileScreen(accountID: this.accountID),
