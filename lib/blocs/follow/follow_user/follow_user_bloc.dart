@@ -30,11 +30,11 @@ class FollowUserBloc extends Bloc<FollowUserEvent, FollowUserState> {
         }
       } else if (event is ClickFollowUserEvent) {
         yield FollowUserLoadingState();
-        bool isSuccess;
+        bool isSuccess = false;
         if (event.mode == ClickFollowUserEvent.FOLLOW_MODE) {
           isSuccess = await followRepo.follow(event.userSrcId, event.userDesId);
           if (isSuccess) yield FollowUserFollowingState();
-        } else if (event.mode == ClickFollowUserEvent.FOLLOW_MODE) {
+        } else if (event.mode == ClickFollowUserEvent.UNFOLLOW_MODE) {
           isSuccess =
               await followRepo.unfollow(event.userSrcId, event.userDesId);
           if (isSuccess) yield FollowUserNotFollowingState();
@@ -44,6 +44,7 @@ class FollowUserBloc extends Bloc<FollowUserEvent, FollowUserState> {
       }
     } catch (e) {
       yield FollowUserFailedState(message: e.toString());
+      print(e);
     }
     // TODO: implement mapEventToState
   }

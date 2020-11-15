@@ -1,20 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/blocs/comment/comment_bloc.dart';
 import 'package:prm_yuvid/screens/user/components_screen/comment/comment_component/comment_component.dart';
+import 'package:prm_yuvid/screens/user/components_screen/user_screen_back_button.dart';
 import 'package:prm_yuvid/themes/colors.dart';
 
 class CommentParent extends StatelessWidget {
   int videoId;
-  CommentParent({Key key,this.videoId}) : super(key: key);
+  CommentParent({Key key, this.videoId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CommentBloc(),
-      child: Scaffold(
-        body: CommentChildScreen(
+      child: UserScreenBackButton(
+        title: "Comment",
+        child: CommentChildScreen(
           videoId: this.videoId,
         ),
       ),
@@ -43,7 +44,7 @@ class _CommentChildScreenState extends State<CommentChildScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height:size.height ,
+      height: size.height,
       color: MainColors.kDark,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +59,8 @@ class _CommentChildScreenState extends State<CommentChildScreen> {
                 return buildLoading();
               } else if (state is CommentSuccessState) {
                 print("hello");
-                return CommentListComponent(list: state.list,videoID:this.widget.videoId);
+                return CommentListComponent(
+                    list: state.list, videoID: this.widget.videoId);
                 // return Container();
               } else if (state is CommentFailedState) {
                 return buildFailure(state.message);

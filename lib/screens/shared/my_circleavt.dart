@@ -38,8 +38,10 @@ class MyCircleAvatar extends StatelessWidget {
         radius: this.radius,
         child: ClipOval(
           child: Image.network(
-            // this.imgPath,
-            "https://www.daunhotsinopec.com/public/front-end/images/avatar.jpg",
+            this.imgPath ??
+                "https://www.daunhotsinopec.com/public/front-end/images/avatar.jpg",
+            width: this.radius * 2,
+            height: this.radius * 2,
             fit: BoxFit.cover,
           ),
         ),
