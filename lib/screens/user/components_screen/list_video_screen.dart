@@ -22,7 +22,7 @@ class _ListVideoComponentState extends State<ListVideoComponent> {
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: <Widget>[
-              VideoCard(videoDTO: this.widget.list[index]),
+              VideoCard(videoDTO: this.widget.list[index], isAutoplay: false),
               Divider(
                 color: MainColors.kMain,
                 thickness: 3,

@@ -9,6 +9,7 @@ import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_avt_screen.dart';
 import 'package:prm_yuvid/screens/user/components_screen/edit_profile_screen.dart';
 import 'package:prm_yuvid/screens/user/components_screen/liked_video_list.dart';
+import 'package:prm_yuvid/screens/user/components_screen/list_follow_screen.dart';
 import 'package:prm_yuvid/screens/user/components_screen/my_following_video.dart';
 import 'package:prm_yuvid/screens/user/main_user_screen/my_video.dart';
 import 'package:prm_yuvid/themes/colors.dart';
@@ -120,34 +121,58 @@ class _ProfileScreenChildState extends State<ProfileScreenChild> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Text(
-                following.length.toString(),
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Following",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
-              ),
-            ],
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ListFollowScreen(
+                        title: "Following",
+                        list: following,
+                      )),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Text(
+                  following.length.toString(),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Following",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Text(
-                follower.length.toString(),
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Followers",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
-              ),
-            ],
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ListFollowScreen(
+                        title: "Follower",
+                        list: follower,
+                      )),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Text(
+                  follower.length.toString(),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Followers",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
           ),
         ),
       ],

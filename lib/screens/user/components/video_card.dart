@@ -11,23 +11,26 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
 class VideoCard extends StatelessWidget {
+  final isAutoplay;
   final VideoDTO videoDTO;
-  const VideoCard({Key key, this.videoDTO}) : super(key: key);
+  const VideoCard({Key key, this.videoDTO, this.isAutoplay = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: BlocProvider(
         create: (context) => LikeBloc(),
-        child: VideoCardChild(videoDTO: videoDTO),
+        child: VideoCardChild(videoDTO: videoDTO, isAutoplay: isAutoplay),
       ),
     );
   }
 }
 
 class VideoCardChild extends StatefulWidget {
+  final isAutoplay;
   final VideoDTO videoDTO;
-  VideoCardChild({this.videoDTO});
+  VideoCardChild({this.videoDTO, this.isAutoplay = true});
   @override
   _VideoCardChildState createState() => _VideoCardChildState();
 }
@@ -56,7 +59,7 @@ class _VideoCardChildState extends State<VideoCardChild> {
       videoPlayerController: _videoController,
       // aspectRatio: _videoController.value.aspectRatio,
       aspectRatio: 16 / 9,
-      autoPlay: true,
+      autoPlay: this.widget.isAutoplay,
       looping: true,
 
       // Try playing around with some of these other options:
@@ -67,7 +70,7 @@ class _VideoCardChildState extends State<VideoCardChild> {
     );
 
     _isLiked = this.widget.videoDTO.likedAccount.contains(MockSession.id);
-    isPlaying = true;
+    isPlaying = this.widget.isAutoplay;
   }
 
   @override
