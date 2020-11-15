@@ -9,4 +9,10 @@ class FollowRepo {
 
   Future<List<AccountDTO>> getAllFollowers(int accountId) =>
       followApiService.getAllFollower(accountId);
+  Future<bool> follow(int srcAccID, int desAccID) =>
+      followApiService.follow(srcAccID, desAccID);
+  Future<bool> unfollow(int srcAccID, int desAccID) =>
+      followApiService.unfollow(srcAccID, desAccID);
+  Future<bool> isFollow(int srcAccID, int desAccID) =>
+      followApiService.isFollow(srcAccID, desAccID);
 }
