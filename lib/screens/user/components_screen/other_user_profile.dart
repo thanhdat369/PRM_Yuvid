@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prm_yuvid/blocs/account/profile/profile_bloc.dart';
 import 'package:prm_yuvid/blocs/follow/follow_counter/follow_counter_bloc.dart';
 import 'package:prm_yuvid/blocs/follow/follow_user/follow_user_bloc.dart';
+import 'package:prm_yuvid/mock/mock_session.dart';
 import 'package:prm_yuvid/models/accountDTO.dart';
 import 'package:prm_yuvid/screens/user/components_screen/other_user_video.dart';
 import 'package:prm_yuvid/screens/user/components_screen/user_screen_back_button.dart';
@@ -43,6 +44,8 @@ class OtherUserProfileScreen extends StatefulWidget {
 
 class _OtherUserProfileScreenState extends State<OtherUserProfileScreen> {
   ProfileBloc profileBloc;
+  FollowCounterBloc followCounterBloc;
+  FollowUserBloc followUserBloc;
   AccountDTO accountDTO;
   @override
   void initState() {
@@ -50,6 +53,12 @@ class _OtherUserProfileScreenState extends State<OtherUserProfileScreen> {
     super.initState();
     profileBloc = BlocProvider.of<ProfileBloc>(context);
     profileBloc.add(FetchProfileEvent(accountId: this.widget.accountID));
+    followCounterBloc = BlocProvider.of<FollowCounterBloc>(context);
+    followCounterBloc
+        .add(FetchFollowCountertEvent(userID: this.widget.accountID));
+    followUserBloc = BlocProvider.of<FollowUserBloc>(context);
+    followUserBloc.add(FetchFollowUserEvent(
+        userSrcId: MockSession.id, userDesId: this.widget.accountID));
   }
 
   Widget buildInfomation({AccountDTO accountDTO}) {
@@ -131,6 +140,47 @@ class _OtherUserProfileScreenState extends State<OtherUserProfileScreen> {
                         padding: const EdgeInsets.only(top: 20),
                         child: buildInfomation(accountDTO: this.accountDTO),
                       ),
+                      BlocBuilder<FollowUserBloc, FollowUserState>(
+                          builder: (context, state) {
+                        if (state is FollowUserLoadingState) {
+                          return CircularProgressIndicator();
+                        } else if (state is FollowUserNotFollowingState) {
+                          return buttonNavigateComponent(
+                              text: "Follow",
+                              press: () => _clickFollowing(true));
+                        } else if (state is FollowUserFollowingState) {
+                          return buttonNavigateComponent(
+                              text: "Following",
+                              press: () => _clickFollowing(false));
+                        } else if (state is FollowUserFailedState) {
+                          return Text(
+                            state.message,
+                            style: TextStyle(color: Colors.red),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
+                      BlocBuilder<FollowCounterBloc, FollowCounterState>(
+                          builder: (context, state) {
+                        if (state is FollowCounterLoadingState) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (state is FollowCounterFailedState) {
+                          return Center(
+                              child: Text(state.message,
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 20)));
+                        } else if (state is FollowCounterSuccessState) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: buildFollowInfo(
+                                follower: state.followerList,
+                                following: state.followingList),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
                       buildButtonNavigation(context,
                           name: this.accountDTO.name),
                     ],
@@ -140,6 +190,45 @@ class _OtherUserProfileScreenState extends State<OtherUserProfileScreen> {
                 }
               }),
             ])));
+  }
+
+  Widget buildFollowInfo(
+      {List<AccountDTO> follower, List<AccountDTO> following}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Text(
+                following.length.toString(),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Following",
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Text(
+                follower.length.toString(),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Followers",
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildButtonNavigation(BuildContext context,
@@ -181,5 +270,19 @@ class _OtherUserProfileScreenState extends State<OtherUserProfileScreen> {
             ),
           ),
         ));
+  }
+
+  _clickFollowing(bool modeFollow) {
+    int mode;
+    if (modeFollow) {
+      mode = ClickFollowUserEvent.FOLLOW_MODE;
+    } else {
+      mode = ClickFollowUserEvent.UNFOLLOW_MODE;
+    }
+
+    this.followUserBloc.add(ClickFollowUserEvent(
+        userSrcId: MockSession.id,
+        userDesId: this.widget.accountID,
+        mode: mode));
   }
 }

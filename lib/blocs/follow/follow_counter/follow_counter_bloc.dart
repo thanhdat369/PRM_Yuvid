@@ -23,8 +23,8 @@ class FollowCounterBloc extends Bloc<FollowCounterEvent, FollowCounterState> {
     try {
       if (event is FetchFollowCountertEvent) {
         yield FollowCounterLoadingState();
-        var listFollower = await followRepo.getAllFollowers(MockSession.id);
-        var listFollowing = await followRepo.getAllFollowing(MockSession.id);
+        var listFollower = await followRepo.getAllFollowers(event.userID);
+        var listFollowing = await followRepo.getAllFollowing(event.userID);
         yield FollowCounterSuccessState(
             followerList: listFollower, followingList: listFollowing);
       }
