@@ -7,7 +7,7 @@ class VideoDTO {
   String description;
   int authorId;
   String authorName;
-  String avatarSrc;
+  String authorAvatarSrc;
   String createdAt;
   List<int> likedAccount;
 
@@ -18,7 +18,7 @@ class VideoDTO {
       this.description,
       this.authorId,
       this.authorName,
-      this.avatarSrc,
+      this.authorAvatarSrc,
       this.createdAt,
       this.likedAccount});
 
@@ -29,7 +29,7 @@ class VideoDTO {
     description = json['description'];
     authorId = json['authorId'];
     authorName = json['authorName'];
-    avatarSrc = json['avatarSrc'];
+    authorAvatarSrc = json['authorAvatarSrc'];
     createdAt = json['createdAt'];
     likedAccount = json['likedAccount'].cast<int>();
   }
@@ -42,7 +42,7 @@ class VideoDTO {
     data['description'] = this.description;
     data['authorId'] = this.authorId;
     data['authorName'] = this.authorName;
-    data['avatarSrc'] = this.avatarSrc;
+    data['authorAvatarSrc'] = this.authorAvatarSrc;
     data['createdAt'] = this.createdAt;
     data['likedAccount'] = this.likedAccount;
     return data;
