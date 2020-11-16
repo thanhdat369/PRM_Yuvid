@@ -83,7 +83,7 @@ class _VideoCardChildState extends State<VideoCardChild> {
             Row(
               children: <Widget>[
                 MyCircleAvatar(
-                  imgPath: this.widget.videoDTO.avatarSrc,
+                  imgPath: this.widget.videoDTO.authorAvatarSrc,
                   userID: this.widget.videoDTO.authorId,
                   radius: 20,
                 ),
@@ -169,23 +169,22 @@ class _VideoCardChildState extends State<VideoCardChild> {
               backgroundColor: MainColors.kSoftDark,
             ),
             FloatingActionButton(
-              heroTag: null,
-              child: Icon(
-                Icons.comment,
-                color: MainColors.kReact,
-                size: 33.0,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CommentParent(
-                            videoId: this.widget.videoDTO.id,
-                          )),
-                );
-              },
-              backgroundColor: Colors.white,
-            ),
+                heroTag: null,
+                child: Icon(
+                  Icons.comment,
+                  color: MainColors.kReact,
+                  size: 33.0,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CommentParent(
+                              videoId: this.widget.videoDTO.id,
+                            )),
+                  );
+                },
+                backgroundColor: MainColors.kSoftDark),
           ],
         ),
       ),
